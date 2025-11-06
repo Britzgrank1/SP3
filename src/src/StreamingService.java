@@ -20,7 +20,7 @@ public class StreamingService {
             login();
         } else if (choice == 2){
             ui.displayMsg("Going to create user screen");
-            createUser();
+            createUser(); //Tror der skal være currentUser.username, currentUser.Password her - Seif
             else if (choice == 0){
                 endSession();
             }
