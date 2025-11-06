@@ -1,0 +1,59 @@
+@startuml
+!pragma layout smetana
+
+class StreamingService {
+    users : ArrayList<User>
+    mediaLibrary : ArrayList<Media>
+    currentUser : User
+}
+
+Interface Media {
+    title : String
+    year : int
+    category : String
+}
+
+class Movie {
+    play
+}
+
+class Series {
+    play
+}
+
+class Season {
+    episodes : ArrayList<Episode>
+}
+
+class Episode {
+    title : String
+    duration : int
+    episodeNumber : int
+    play
+}
+
+class Category {
+    name : String
+}
+
+class User {
+    username : String
+    password : String
+}
+
+
+'Relationer'
+
+StreamingService "1" --> "*" User
+StreamingService "1" --> "*" Media
+
+
+Media <|-- Movie
+Media <|-- Series
+
+Series "1" --> "*" Season
+Season "1" --> "*" Episode
+
+Category "1" --> "*" Media
+
+@enduml
