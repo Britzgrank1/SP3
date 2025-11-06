@@ -9,4 +9,10 @@ public class StreamingService {
     TextUI ui = new TextUI();
     FileIO io = new FileIO();
     User currentUser;
+
+    public void startSession(){
+        ui.displayMsg("Welcome to Chill");
+        ui.promptNumeric("")
+    }
+
 }
