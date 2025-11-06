@@ -1,2 +1,2 @@
-public class Episode {
+public class Episode extends Season{
 }

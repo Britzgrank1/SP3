@@ -1,2 +1,3 @@
-public class Movie {
+public class Movie implements Media{
+
 }

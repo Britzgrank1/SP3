@@ -1,2 +1,3 @@
-public class Series {
+public class Series implements Media{
+
 }
