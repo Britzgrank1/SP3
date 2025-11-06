@@ -34,6 +34,7 @@ public class StreamingService {
         username = TextUI.promptText("Insert username:");
         password = TextUI.promptText("Insert password:");
 
+        User user = new User(username, password);
         ArrayList<String> userData = new ArrayList<>();
         for (User u: users){
             String s = u.toString();
@@ -41,6 +42,8 @@ public class StreamingService {
         }
 
         io.saveData(userData, "data/userData.csv", "Username, Password");
+        
+        userData.add(String.valueOf(user));
 
         System.out.println("New user added " + username);
 
