@@ -2,15 +2,15 @@
 !pragma layout smetana
 
 class StreamingService {
-    users : ArrayList<User>
-    mediaLibrary : ArrayList<Media>
-    currentUser : User
+    - users : ArrayList<User>
+    - mediaLibrary : ArrayList<Media>
+    - currentUser : User
 }
 
 Interface Media {
-    title : String
-    year : int
-    category : String
+    - title : String
+    - year : int
+    - category : String
 }
 
 class Movie {
@@ -22,19 +22,19 @@ class Series {
 }
 
 class Season {
-    episodes : ArrayList<Episode>
+    - episodes : ArrayList<Episode>
 }
 
 class Episode {
-    title : String
-    duration : int
-    episodeNumber : int
+    - title : String
+    - duration : int
+    - episodeNumber : int
     play
 }
 
 class User {
-    username : String
-    password : String
+    - username : String
+    - password : String
 }
 
 
