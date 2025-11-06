@@ -27,7 +27,7 @@ public class TextUI {
         }
     }
 
-    public void displayMsg(String msg){
+    public static void displayMsg(String msg){
         System.out.println(msg);
 
     }
@@ -39,7 +39,7 @@ public class TextUI {
         return numInput;
     }
 
-    public String promptText(String msg){
+    public static String promptText(String msg){
         displayMsg(msg);         //Stille brugeren et spørgsmål
         String input = sc.nextLine();          //Give brugere et sted at placere sit svar og vente på svaret
 
