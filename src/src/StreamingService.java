@@ -17,4 +17,17 @@ public class StreamingService {
 
     }
 
+
+    private void createUser(){
+        String username = TextUI.promptText("Insert username:");
+        String password = TextUI.promptText("Insert password:");
+
+        User user = new User(currentUser.username, currentUser.password);
+
+        users.add(io.saveData( userData,"data/userData.csv","Username, Password"));
+
+        System.out.println("New user added " + username);
+
+    }
+
 }
