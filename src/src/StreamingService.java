@@ -18,6 +18,18 @@ public class StreamingService {
     }
 
 
+
+    public void endSession(){
+        ui.displayMsg("Exiting Chill");
+        ArrayList<String> userData = new ArrayList<>();
+        for (User user: users){
+            String s = user.toString();
+            userData.add(s);
+        }
+        io.saveData(userData, "data/userData.csv", "Username, Password");
+    }
+
+
     private void createUser(){
         String username = TextUI.promptText("Insert username:");
         String password = TextUI.promptText("Insert password:");
