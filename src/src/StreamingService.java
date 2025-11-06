@@ -18,15 +18,44 @@ public class StreamingService {
     }
 
 
-    private void createUser(){
-        String username = TextUI.promptText("Insert username:");
-        String password = TextUI.promptText("Insert password:");
 
-        User user = new User(currentUser.username, currentUser.password);
+    public void endSession(){
+        ui.displayMsg("Exiting Chill");
+        ArrayList<String> userData = new ArrayList<>();
+        for (User user: users){
+            String s = user.toString();
+            userData.add(s);
+        }
+        io.saveData(userData, "data/userData.csv", "Username, Password");
+    }
 
-        users.add(io.saveData( userData,"data/userData.csv","Username, Password"));
+
+    private void createUser(String username, String password){
+        username = TextUI.promptText("Insert username:");
+        password = TextUI.promptText("Insert password:");
+
+        ArrayList<String> userData = new ArrayList<>();
+        for (User u: users){
+            String s = u.toString();
+            userData.add(s);
+        }
+
+        io.saveData(userData, "data/userData.csv", "Username, Password");
 
         System.out.println("New user added " + username);
+
+    }
+    private void userLogin(String username, String password){
+        username = ui.promptText("Insert username:");
+
+        password = ui.promptText("Insert password:");
+
+        for(User u : users){
+            if(u.getUsername().equals(username) && u.getPassword().equals(password)){
+                currentUser = u;
+                ui.displayMsg("Login Succesfull");
+            }
+        }
 
     }
 
