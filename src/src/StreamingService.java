@@ -36,9 +36,8 @@ public class StreamingService {
 
         User user = new User(currentUser.username, currentUser.password);
 
-        users.add(io.saveData( userData,"data/userData.csv","Username, Password"));
-
         System.out.println("New user added " + username);
+
 
     }
 
