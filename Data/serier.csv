@@ -1,4 +1,5 @@
-Twin Peaks; 1990-1991; Crime, Drama, Mystery; 8,8; 1-8, 2-22;
+Title,Date,Category,Rating,Season-Episode
+Twin Peaks,1990-1991,Crime;Drama;Mystery,8.8, 1-8; 2-22;
 The Sopranos; 1999-2007; Crime, Drama; 9,2; 1-13, 2-13, 3-13, 4-13, 5-13, 6-21;
 Game Of Thrones; 2011-; Action, Adventure, Drama; 9,5; 1-10, 2-10, 3-10, 4-10, 5-10, 6-10, 7-7;
 Breaking Bad; 2008-2013; Crime, Drama, Thriller; 9,5; 1-7, 2-13, 3-13, 4-13, 5-16;
@@ -98,3 +99,4 @@ Person Of Interest; 2011-2016; Action, Crime, Drama; 8,4; 1-23, 2-22, 3-23, 4-22
 Californication; 2007-2014; Comedy, Drama; 8,3; 1-12, 2-12, 3-12, 4-12, 5-12, 6-12, 7-12;
 Three's Company; 1976-1984; Comedy; 7,6; 1-6, 2-25, 3-22, 4-25, 5-22, 6-28, 7-22, 8-22;
 Dexter; 2006-2013; Crime, Drama, Mystery; 8,7; 1-12, 2-12, 3-12, 4-12, 5-12, 6-12, 7-12,8-12;
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
