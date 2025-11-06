@@ -1,0 +1,42 @@
+@startuml
+!pragma layout smetana
+title Domænemodel - StreamingService
+
+class StreamingService {
+    users : List<User>
+    mediaLibrary : List<Media>
+    currentUser : User
+}
+
+interface Media {
+    title : String
+    year : int
+    category : String
+}
+
+class Movie
+class Series
+class Season {
+    episodes : List<Episode>
+}
+class Episode {
+    title : String
+    duration : int
+    episodeNumber : int
+}
+class User {
+    username : String
+    password : String
+}
+
+
+StreamingService "1" --> "*" User : has >
+StreamingService "1" --> "*" Media : has >
+
+Media <|-- Movie : is
+Media <|-- Series : is
+
+Series "1" --> "*" Season : has >
+Season "1" --> "*" Episode : has >
+
+@enduml
