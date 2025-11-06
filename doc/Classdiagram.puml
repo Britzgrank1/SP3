@@ -1,27 +1,59 @@
 @startuml
-'https://plantuml.com/class-diagram
+!pragma layout smetana
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
-
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+class StreamingService {
+    users : ArrayList<User>
+    mediaLibrary : ArrayList<Media>
+    currentUser : User
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+Interface Media {
+    title : String
+    year : int
+    category : String
 }
+
+class Movie {
+    play
+}
+
+class Series {
+    play
+}
+
+class Season {
+    episodes : ArrayList<Episode>
+}
+
+class Episode {
+    title : String
+    duration : int
+    episodeNumber : int
+    play
+}
+
+class Category {
+    name : String
+}
+
+class User {
+    username : String
+    password : String
+}
+
+
+'Relationer'
+
+StreamingService "1" --> "*" User
+StreamingService "1" --> "*" Media
+
+
+Media <|-- Movie
+Media <|-- Series
+
+Series "1" --> "*" Season
+Season "1" --> "*" Episode
+
+Category "1" --> "*" Media
 
 @enduml
