@@ -12,7 +12,7 @@ public class StreamingService {
 
     public void startSession(){
         ui.displayMsg("Welcome to Chill");
-        ui.promptNumeric("")
+        ui.promptNumeric("");
     }
 
 }
