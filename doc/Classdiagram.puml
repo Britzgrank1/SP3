@@ -8,9 +8,9 @@ class StreamingService {
 }
 
 Interface Media {
-    - title : String
-    - year : int
-    - category : String
+    - String title
+    - int year
+    - String category
 }
 
 class Movie {
