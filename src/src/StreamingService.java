@@ -12,7 +12,9 @@ public class StreamingService {
 
     public void startSession(){
         ui.displayMsg("Welcome to Chill");
-        ui.promptNumeric("")
+        System.out.println();
+        ui.promptNumeric("Press 1 for login\nPress 2 for create new user.");
+
     }
 
 }
