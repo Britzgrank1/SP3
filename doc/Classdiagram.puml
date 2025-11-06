@@ -8,21 +8,28 @@ class StreamingService {
 }
 
 Interface Media {
-    - String title
-    - int year
-    - String category
+    getTitle
+      getYear
+      getCategory
 }
 
 class Movie {
-    play
+   -String title
+      -int year
+      -String Category
 }
 
 class Series {
-    play
+   -String title
+   -int year
+   -String Category
 }
 
 class Season {
     - episodes : ArrayList<Episode>
+     -String title
+     -int year
+     -String Category
 }
 
 class Episode {
