@@ -40,15 +40,15 @@ class User {
 
 'Relationer'
 
-StreamingService "1" --> "*" User
-StreamingService "1" --> "*" Media
+StreamingService  -->  User
+StreamingService  --> Media
 
 
 Media <|-- Movie
 Media <|-- Series
 
-Series "1" --> "*" Season
-Season "1" --> "*" Episode
+Series  -->  Season
+Season  -->  Episode
 
 
 @enduml
