@@ -1,54 +1,70 @@
 @startuml
 !pragma layout smetana
 
-class StreamingService {
-    - users : ArrayList<User>
-    - mediaLibrary : ArrayList<Media>
-    - currentUser : User
+title Chill Streaming Service - Class Diagram
+
+package util {
+    class FileIO {
+        +saveData(list: ArrayList<String>, path: String, header: String): void
+        +readData(path: String): ArrayList<String>
+        +readData(path: String, length: int): String[]
+    }
+
+    class TextUI {
+        -sc: Scanner
+        +promptChoice(options: ArrayList<String>, limit: int, msg: String): ArrayList<String>
+        +displayList(list: ArrayList<String>, msg: String): void
+        +displayMsg(msg: String): void
+        +promptNumeric(msg: String): int
+        +promptText(msg: String): String
+        +promptBinary(msg: String): boolean
+    }
 }
 
-Interface Media {
-    - String title
-    - int year
-    - String category
-}
+interface Media
 
-class Movie {
-    play
-}
-
-class Series {
-    play
-}
-
-class Season {
-    - episodes : ArrayList<Episode>
-}
-
-class Episode {
-    - title : String
-    - duration : int
-    - episodeNumber : int
-    play
-}
+class Series
+class Season
+class Episode
+class Movie
 
 class User {
-    - username : String
-    - password : String
+    -username: String
+    -password: String
+    +getUsername(): String
+    +getPassword(): String
+    +setUsername(username: String): void
+    +setPassword(password: String): void
+    +toString(): String
 }
 
+class StreamingService {
+    -users: ArrayList<User>
+    -mediaLibrary: ArrayList<Media>
+    -ui: TextUI
+    -io: FileIO
+    -currentUser: User
 
-'Relationer'
+    +startSession(): void
+    +endSession(): void
+    -createUser(): void
+    -userLogin(): void
+}
 
-StreamingService  -->  User
-StreamingService  --> Media
+class Main {
+    +main(): void
+}
 
+StreamingService --> User : has >
+StreamingService --> Media : has >
+StreamingService --> TextUI : >
+StreamingService --> FileIO : >
 
-Media <|-- Movie
-Media <|-- Series
+Season --> Series : has >
+Episode --> Season : has >
+Movie --> Media : is
+Series --|> Media : is
 
-Series  -->  Season
-Season  -->  Episode
-
+Main --> StreamingService :  >
 
 @enduml
