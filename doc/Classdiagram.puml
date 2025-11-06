@@ -32,10 +32,6 @@ class Episode {
     play
 }
 
-class Category {
-    name : String
-}
-
 class User {
     username : String
     password : String
@@ -54,6 +50,5 @@ Media <|-- Series
 Series "1" --> "*" Season
 Season "1" --> "*" Episode
 
-Category "1" --> "*" Media
 
 @enduml
