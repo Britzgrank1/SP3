@@ -31,6 +31,10 @@ public class StreamingService {
         }
 
     private void userLogin() {
+        String username = TextUI.promptText("Insert username:"); //String foran username tror jeg burde fjernes -seif
+        String password = TextUI.promptText("Insert password:"); //String foran Password tror jeg burde fjernes -seif
+
+
     }
 
 

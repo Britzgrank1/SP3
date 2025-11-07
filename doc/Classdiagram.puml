@@ -7,22 +7,24 @@ class StreamingService {
     - currentUser : User
 }
 
-Interface Media {
+abstract Media {
     - String title
     - int year
     - String category
 }
 
 class Movie {
-    play
+- int [] movies
+    play()
 }
 
 class Series {
-    play
+- int[] Season
+    play()
 }
 
 class Season {
-    - episodes : ArrayList<Episode>
+    - int[] Episode
 }
 
 class Episode {

@@ -1,4 +1,4 @@
-public interface Media {
+public abstract class Media {
 
 
 }
