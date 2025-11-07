@@ -21,7 +21,7 @@ public class TextUI {
         return choices;
     }
 
-    public void displayList(ArrayList<String>list, String msg) {
+    public static void displayList(ArrayList<String>list, String msg) {
         for (int i = 0; i < list.size();i++) {
             System.out.println(i+1+". "+list.get(i));
         }

@@ -17,10 +17,10 @@ public class StreamingService {
 
         if(choice == 1){
             ui.displayMsg("Going to login screen");
-            login();
+            userLogin();
         } else if (choice == 2){
             ui.displayMsg("Going to create user screen");
-            createUser(); //Tror der skal være currentUser.username, currentUser.Password her - Seif
+            createUser();} //Tror der skal være currentUser.username, currentUser.Password her - Seif
             else if (choice == 0){
                 endSession();
             }
@@ -29,8 +29,9 @@ public class StreamingService {
                 startSession();
             }
         }
-    }
 
+    private void userLogin() {
+    }
 
 
     public void endSession(){
@@ -40,8 +41,8 @@ public class StreamingService {
 
 
     private void createUser(String username, String password){
-        String username = TextUI.promptText("Insert username:"); //String foran username tror jeg burde fjernes -seif
-        String password = TextUI.promptText("Insert password:"); //String foran Password tror jeg burde fjernes -seif
+     username = TextUI.promptText("Insert username:"); //String foran username tror jeg burde fjernes -seif
+     password = TextUI.promptText("Insert password:"); //String foran Password tror jeg burde fjernes -seif
 
         User user = new User(username, password);
 
