@@ -40,9 +40,9 @@ public class StreamingService {
     }
 
 
-    private void createUser(String username, String password){
-     username = TextUI.promptText("Insert username:"); //String foran username tror jeg burde fjernes -seif
-     password = TextUI.promptText("Insert password:"); //String foran Password tror jeg burde fjernes -seif
+    private void createUser(){
+        String username = TextUI.promptText("Insert username:"); //String foran username tror jeg burde fjernes -seif
+        String password = TextUI.promptText("Insert password:"); //String foran Password tror jeg burde fjernes -seif
 
         User user = new User(username, password);
 
