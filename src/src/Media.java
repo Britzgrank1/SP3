@@ -1,20 +1,30 @@
-import util.TextUI;
-
 public abstract class Media {
-    private String title;
-    private int releaseDate;
-    private String category;
-    private double rating;
+    protected String title;
+    protected int releaseYear;
+    protected String category;
+    protected double rating;
 
-    public Media(String title, int releaseDate, String category, double rating) {
+
+    public Media(String title, int releaseYear, String category, double rating) {
         this.title = title;
-        this.releaseDate = releaseDate;
+        this.releaseYear = releaseYear;
         this.category = category;
         this.rating = rating;
     }
 
-    private void play() {
+    public String getTitle() { return title; }
+    public int getReleaseYear() { return releaseYear; }
+    public String getCategory() { return category; }
+    public double getRating() { return rating; }
 
+
+    @Override
+    public String toString() {
+        return "Media{" +
+                "title='" + title + '\'' +
+                ", releaseYear=" + releaseYear +
+                ", category='" + category + '\'' +
+                ", rating=" + rating +
+                '}';
     }
-
 }
