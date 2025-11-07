@@ -60,7 +60,7 @@ public class StreamingService {
 
     }
 
-    }
+
 
 
     public void endSession(){
@@ -84,19 +84,6 @@ public class StreamingService {
         io.saveData(userData, "Data/userData.csv", "Username, Password"); // gemmer users til til userData.csv
 
         System.out.println("New user added: " + username); // printer en besked at brugeren er gemt
-    }
-
-    public void loadUsers() {
-        ArrayList<String> userData = io.readData("Data/userData.csv");
-        users.clear();
-        for (String data: userData){
-            String[] info = data.split(",");
-            if(info.length>= 2){
-                String username = info[0].trim();
-                String password  = info[1].trim();
-                users.add(new User(username, password));
-            }
-        }
     }
 
     public void loadUsers() {
