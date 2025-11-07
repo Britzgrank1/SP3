@@ -13,52 +13,53 @@ public class StreamingService {
     public void startSession(){
         ui.displayMsg("Welcome to Chill");
         System.out.println();
-        ui.promptNumeric("Press 1 for login\nPress 2 for create new user.");
+        int choice = ui.promptNumeric("Press 1 for login\nPress 2 for create new user.");
 
+        if(choice == 1){
+            ui.displayMsg("Going to login screen");
+            userLogin();
+        } else if (choice == 2){
+            ui.displayMsg("Going to create user screen");
+            createUser();} //Tror der skal være currentUser.username, currentUser.Password her - Seif
+        else if (choice == 0){
+            endSession();
+        }
+        else {
+            ui.displayMsg("Invalid choice, try again");
+            startSession();
+        }
     }
 
+    private void userLogin() {
+        String username = TextUI.promptText("Insert username:"); //String foran username tror jeg burde fjernes -seif
+        String password = TextUI.promptText("Insert password:"); //String foran Password tror jeg burde fjernes -seif
+
+
+    }
 
 
     public void endSession(){
         ui.displayMsg("Exiting Chill");
-        ArrayList<String> userData = new ArrayList<>();
-        for (User user: users){
-            String s = user.toString();
-            userData.add(s);
-        }
-        io.saveData(userData, "data/userData.csv", "Username, Password");
+
     }
 
 
-    private void createUser(String username, String password){
-        username = TextUI.promptText("Insert username:");
-        password = TextUI.promptText("Insert password:");
+    private void createUser(){
+        String username = TextUI.promptText("Insert username:"); //String foran username tror jeg burde fjernes -seif
+        String password = TextUI.promptText("Insert password:"); //String foran Password tror jeg burde fjernes -seif
 
-        User user = new User(username, password);
-        ArrayList<String> userData = new ArrayList<>();
+        User user = new User(username, password); // creater nye users
+        users.add(user); // adder users
+
+        ArrayList<String> userData = new ArrayList<>(); // ArrayList til at gemme users
         for (User u: users){
             String s = u.toString();
-            userData.add(s);
+        userData.add(s);
         }
+        io.saveData(userData, "Data/userData.csv", "Username, Password"); // gemmer users til til userData.csv
 
-        io.saveData(userData, "data/userData.csv", "Username, Password");
-        
-        userData.add(String.valueOf(user));
+        System.out.println("New user added " + username); // printer en besked at brugeren er gemt
 
-        System.out.println("New user added " + username);
-
-    }
-    private void userLogin(String username, String password){
-        username = ui.promptText("Insert username:");
-
-        password = ui.promptText("Insert password:");
-
-        for(User u : users){
-            if(u.getUsername().equals(username) && u.getPassword().equals(password)){
-                currentUser = u;
-                ui.displayMsg("Login Succesfull");
-            }
-        }
 
     }
 
