@@ -20,9 +20,11 @@ public class StreamingService {
             userLogin();
         } else if (choice == 2){
             ui.displayMsg("Going to create user screen");
-            createUser();} //Tror der skal være currentUser.username, currentUser.Password her - Seif
-            else if (choice == 0){
-                endSession();
+            createUser();
+            ui.displayMsg("Returning...");
+            startSession();
+        }    else if (choice == 0){
+
             }
             else {
                 ui.displayMsg("Invalid choice, try again");
@@ -61,13 +63,10 @@ public class StreamingService {
     }
 
 
-
-
     public void endSession(){
         ui.displayMsg("Exiting Chill");
 
     }
-
 
     private void createUser(){
         String username = TextUI.promptText("Insert username:");
