@@ -12,6 +12,10 @@ public class Series extends Media {
         seasons[seasons.length - 1] = s;
     }
 
+    public Season[] getSeasons() {
+        return seasons;
+    }
+
     @Override
     public String toString() {
         return "Series{" +

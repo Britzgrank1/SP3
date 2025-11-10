@@ -32,9 +32,15 @@ public class User {
         return seen;
     }
 
-    public void setUsers(ArrayList<String> Seen) {
-        this.seen = seen;
+
+
+    public void addSeen(String mediaTitle) {
+        if (!seen.contains(mediaTitle)) {
+            seen.add(mediaTitle);
+        }
     }
+
+
 
     @Override
     public String toString() {

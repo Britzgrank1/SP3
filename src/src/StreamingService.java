@@ -156,8 +156,8 @@ public class StreamingService {
             }
 
         public void saveToWatched(){
-            File watchedList = new File(currentUser.getUsername()+"_watched.csv");
-            try (FileWriter writer = new FileWriter(watchedList)) {
+            File watchedFile = new File(currentUser.getUsername()+"_watched.csv");
+            try (FileWriter writer = new FileWriter(watchedFile)) {
                 writer.write("Watched Titles\n");
 
                 for (String title : currentUser.getSeen()) {
@@ -170,12 +170,48 @@ public class StreamingService {
             }
         }
 
+    private void playMedia(Media media) {
+        if (media instanceof Movie m) {
+            m.playMovie();
+        } else if (media instanceof Series s) {
+            ui.displayMsg("Playing series: " + s.getTitle());
+            for (Season season : s.getSeasons()) {
+                for (Episode ep : season.getEpisodes()) {
+                    ep.playMovie();
+                }
+            }
+        }
+        currentUser.addSeen(media.getTitle());
+        saveToWatched();
+    }
+
+    private void userMenu(Media media){
+        ui.displayMsg("You chose: " + media.getTitle());
+        ui.displayMsg("1) Play");
+        ui.displayMsg("2) Save for later");
+        ui.displayMsg("3) Remove from saved list");
+        ui.displayMsg("0) Back");
+
+        int choice = ui.promptNumeric("Choose an option: ");
+    switch (choice){
+        case 1 -> playMedia(media);
+        case 2 -> watchedList(media);
+        case 3 -> removeFromList(media);
+        case 0 -> ui.displayMsg("Returning...");
+        default -> ui.displayMsg("Invalid choice");
+    }
+    }
+
+    private void removeFromList(Media media) {
+        if (currentUser.watchedList().remove(media.getTitle())) {
+            ui.displayMsg(media.getTitle() + " removed from saved list.");
+        } else {
+            ui.displayMsg(media.getTitle() + " was not in saved list.");
+        }
+    }
 
 
-
-
-
-        public void endSession(){
+    public void endSession(){
         ui.displayMsg("Exiting Chill");
 
     }
