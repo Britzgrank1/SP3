@@ -4,6 +4,7 @@ public class Main {
         s.loadUsers();
         s.startSession();
         s.endSession();
+        s.searchMovie();
 
 
     }
