@@ -169,8 +169,27 @@ public class StreamingService {
 
 
     public void searchMovie(){
+        ArrayList<String> userData = io.readData("Data/film.csv");
+        String searchFilm = TextUI.promptText("Type movie name:");
+        boolean found = false;
+        for(Media m: mediaLibrary){
+            if(m.getTitle().equalsIgnoreCase(searchFilm));
+            found = true;
+            ui.displayMsg("The movie " + m.getTitle() + " has being found ");
 
+            if(m instanceof Playable) {
+                Playable playable = (Playable) m;
+                playable.playMovie();
+            }else {
+                ui.displayMsg("This movie does not exist..");
+            }
+            break;
         }
+        if(!found){
+            ui.displayMsg("Movie not found, Try again!");
+            searchMovie();
+        }
+    }
 
     public void endSession(){
         ui.displayMsg("Exiting Chill");
