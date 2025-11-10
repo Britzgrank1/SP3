@@ -5,15 +5,7 @@ public class User {
     protected String username;
     protected String password;
     ArrayList<String> seen = new ArrayList<>();
-    protected ArrayList<String> favorite = new ArrayList<>();
 
-    public ArrayList<String> getFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(ArrayList<String> favorite) {
-        this.favorite = favorite;
-    }
 
     public User(String username, String password) {
         this.username = username;

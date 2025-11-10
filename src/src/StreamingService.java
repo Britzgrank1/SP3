@@ -240,7 +240,7 @@ public class StreamingService {
             }
 
             private void removeFromList (Media media){
-                if (currentUser.watchedList().remove(media.getTitle())) {
+                if (currentUser.getSeen().remove(media.getTitle())) {
                     ui.displayMsg(media.getTitle() + " removed from saved list.");
                 } else {
                     ui.displayMsg(media.getTitle() + " was not in saved list.");
