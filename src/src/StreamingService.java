@@ -14,13 +14,15 @@ public class StreamingService {
 
 
     public void startSession(){
+
         ui.displayMsg("Welcome to Chill");
         System.out.println();
-        int choice = ui.promptNumeric("Press 1 for login\nPress 2 for create new user\nPress 3 to list all users\nPress 4 delete user\nPress 0 to exit Chill");
+        int choice = ui.promptNumeric("Press 1 for login\nPress 2 for create new user\nPress 3 to list all users\nPress 4 delete user\nPress 5 to see categories\nPress 0 to exit Chill");
 
         if(choice == 1){
             ui.displayMsg("Going to login screen");
             userLogin();
+
         } else if (choice == 2){
             ui.displayMsg("Going to create user screen");
             createUser();
@@ -31,7 +33,7 @@ public class StreamingService {
             listAllUsers();
             ui.displayMsg("Returning...");
             startSession();
-        } else if (choice == 4){
+        } else if (choice == 4) {
             deleteUser();
             ui.displayMsg("Returning...");
             startSession();
@@ -43,6 +45,8 @@ public class StreamingService {
                 startSession();
             }
         }
+
+
 
     public void userLogin() {
         String username = TextUI.promptText("Insert username: ");
@@ -95,7 +99,7 @@ public class StreamingService {
         users.clear();
 
             for (String data : userData) {
-                String[] info = data.split(",");
+                String[] info = data.split(";");
                 if (info.length >= 2) {
                     String username = info[0].trim();
                     String password = info[1].trim();
@@ -103,6 +107,45 @@ public class StreamingService {
                 }
             }
         }
+    private void loadMovies() {
+        for (String line : io.readData("Data/film.csv")) {
+            if (line.trim().isEmpty()) continue;
+
+            String[] parts = line.split(";");
+            if (parts.length < 4) continue;
+
+            String title = parts[0].trim();
+            int year = Integer.parseInt(parts[1].trim());
+            String category = parts[2].trim();
+            double rating = Double.parseDouble(parts[3].replace(",", ".").trim());
+
+            mediaLibrary.add(new Movie(title, year, category, rating));
+        }
+    }
+    private void showMoviesByCategory() {
+        String category = ui.promptText("What category do you want to see: Comedy/Film-noir/Sci-fi/" +
+                "Musical/Mystery/Romance/thriller/Romance/War/" +
+                "Crime/Drama/Biography/History/Adventure/Family/Fantasy");
+        ArrayList<Media> filtered = new ArrayList<>();
+
+        for (Media m : mediaLibrary)
+            if (m.getCategory().toLowerCase().contains(category.toLowerCase()))
+                filtered.add(m);
+
+        if (filtered.isEmpty()) {
+            ui.displayMsg("No movies found in category: " + category);
+            return;
+        }
+
+        for (int i = 0; i < filtered.size(); i++)
+            System.out.println((i + 1) + ". " + filtered.get(i));
+
+        int choice = ui.promptNumeric("Select a movie (0 to cancel):");
+        if (choice > 0 && choice <= filtered.size())
+            ui.displayMsg("You selected: " + filtered.get(choice - 1).getTitle());
+        else
+            ui.displayMsg("Cancelled.");
+    }
 
     private void listAllUsers() {
 
@@ -163,4 +206,5 @@ public class StreamingService {
         ui.displayMsg("Exiting Chill");
 
     }
+
 }

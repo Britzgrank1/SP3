@@ -2,25 +2,22 @@ import util.FileIO;
 import util.TextUI;
 
 public class Movie extends Media implements Playable  {
-    private int duration;
+
     TextUI ui = new TextUI();
 
-    public Movie(String title, int releaseYear, String category,double rating, int duration){
+    public Movie(String title, int releaseYear, String category,double rating){
             super(title, releaseYear, category, rating);
-            this.duration = duration;
+
         }
 
-        public int getDuration () {
-            return duration;
-        }
+
 
         @Override
         public String toString () {
             return "Movie{" +
-                    "duration=" + duration +
-                    ", title='" + title + '\'' +
+                    ", title=" + title + '\'' +
                     ", releaseYear=" + releaseYear +
-                    ", category='" + category + '\'' +
+                    ", category=" + category + '\'' +
                     ", rating=" + rating +
                     '}';
     }
