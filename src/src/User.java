@@ -1,8 +1,10 @@
 import util.TextUI;
+import java.util.ArrayList;
 
 public class User {
     protected String username;
     protected String password;
+    ArrayList<String> seen = new ArrayList<>();
 
 
     public User(String username, String password) {
@@ -24,6 +26,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public ArrayList<String> getSeen() {
+        return seen;
+    }
+
+    public void setUsers(ArrayList<String> Seen) {
+        this.seen = seen;
     }
 
     @Override

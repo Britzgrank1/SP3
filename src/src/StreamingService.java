@@ -1,6 +1,6 @@
 import util.FileIO;
 import util.TextUI;
-
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -155,11 +155,27 @@ public class StreamingService {
                 }
             }
 
-        public void searchMovie(){
+        public void saveToWatched(){
+            File watchedList = new File(currentUser.getUsername()+"_watched.csv");
+            try (FileWriter writer = new FileWriter(watchedList)) {
+                writer.write("Watched Titles\n");
 
+                for (String title : currentUser.getSeen()) {
+                    writer.write(title + "\n");
+                }
+                ui.displayMsg("Watched list saved for user: " + currentUser.getUsername());
+            } catch (IOException e) {
+                ui.displayMsg("Error saving watched list: " + e.getMessage());
+                throw new RuntimeException(e);
+            }
         }
 
-    public void endSession(){
+
+
+
+
+
+        public void endSession(){
         ui.displayMsg("Exiting Chill");
 
     }
