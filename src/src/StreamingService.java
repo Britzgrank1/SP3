@@ -115,6 +115,22 @@ public class StreamingService {
                 }
             }
         }
+    private void loadseries() {
+
+ for (String category : io.readData("Data/serier.csv")){
+     switch (category){
+         case Drama:
+             ui.promptNumeric("1:Drama");
+             break;
+         case Crime:
+
+
+     }
+
+ }
+
+    }
+
     private void loadMovies() {
         for (String line : io.readData("Data/film.csv")) {
             if (line.trim().isEmpty()) continue;
@@ -129,6 +145,11 @@ public class StreamingService {
 
             mediaLibrary.add(new Movie(title, year, category, rating));
         }
+    }
+    private void showSeriesByCategory(){
+
+
+
     }
     private void showMoviesByCategory() {
         String category = ui.promptText("What category do you want to see: Comedy/Film-noir/Sci-fi/" +

@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class Series extends Media {
     private Season[] seasons = new Season[0];
 
-    public Series(String title, int releaseYear, String category, double rating) {
+    public Series(String title, int releaseYear, String category, double rating,int SeasonEpisode) {
         super(title, releaseYear, category, rating);
     }
 
