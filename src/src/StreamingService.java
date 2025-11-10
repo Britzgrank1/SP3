@@ -17,11 +17,19 @@ public class StreamingService {
 
         ui.displayMsg("Welcome to Chill");
         System.out.println();
-        int choice = ui.promptNumeric("Press 1 for login\nPress 2 for create new user\nPress 3 to list all users\nPress 4 delete user\nPress 5 to see categories\nPress 0 to exit Chill");
+        int choice = ui.promptNumeric("Press 1 for login\nPress 2 for create new user\nPress 3 to list all users\nPress 4 delete user\nPress 0 to exit Chill");
+
 
         if(choice == 1){
             ui.displayMsg("Going to login screen");
             userLogin();
+
+            int movieChoice = ui.promptNumeric("Press 1 to look at the category of movies\nPress 2 to look at the category of series");
+            if(movieChoice == 1){
+                loadMovies();
+                showMoviesByCategory();
+            }
+
 
         } else if (choice == 2){
             ui.displayMsg("Going to create user screen");
@@ -142,7 +150,7 @@ public class StreamingService {
 
         int choice = ui.promptNumeric("Select a movie (0 to cancel):");
         if (choice > 0 && choice <= filtered.size())
-            ui.displayMsg("You selected: " + filtered.get(choice - 1).getTitle());
+            ui.displayMsg("You're now playing " + filtered.get(choice - 1).getTitle());
         else
             ui.displayMsg("Cancelled.");
     }
