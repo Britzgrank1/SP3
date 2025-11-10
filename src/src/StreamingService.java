@@ -1,6 +1,7 @@
 import util.FileIO;
 import util.TextUI;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -144,18 +145,30 @@ public class StreamingService {
                 }
             }
         }
-        public void saveUsers(){
-            try(FileWriter writer = new FileWriter("Data/userData.csv")) {
+        public void saveUsers() {
+            try (FileWriter writer = new FileWriter("Data/userData.csv")) {
                 writer.write("Username, Password\n");
                 for (User u : users) {
                     writer.write(u.getUsername() + ", " + u.getPassword());
                 }
-            } catch(IOException e){
-                    e.printStackTrace();
-                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
+        public void watchedList(Media media){
+            File WatchedList = new File("Data/"+currentUser.getUsername()+"watchedList.csv");
+            try(FileWriter writer = new FileWriter(WatchedList,true)) {
+                if (WatchedList.length()==0){
+                    writer.write("Watched Titles\n");
+                }
+                writer.write(media.getTitle()+"\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-        public void searchMovie(){
+
+    public void searchMovie(){
 
         }
 

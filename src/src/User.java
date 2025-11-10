@@ -1,9 +1,20 @@
 import util.TextUI;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class User {
     protected String username;
     protected String password;
+    protected ArrayList<String> favorite = new ArrayList<>();
 
+    public ArrayList<String> getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(ArrayList<String> favorite) {
+        this.favorite = favorite;
+    }
 
     public User(String username, String password) {
         this.username = username;
