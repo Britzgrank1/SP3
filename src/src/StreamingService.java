@@ -24,12 +24,12 @@ public class StreamingService {
             ui.displayMsg("Going to login screen");
             userLogin();
 
-            int movieChoice = ui.promptNumeric("Press 1 to look at the category of movies\nPress 2 to look at the category of series");
-            if (movieChoice == 1) {
+            int categoryChoice = ui.promptNumeric("Press 1 to look at the category of movies\nPress 2 to look at the category of series");
+            if (categoryChoice == 1) {
 
                 showMoviesByCategory();
-
-
+            } else if (categoryChoice == 2){
+                showSeriesByCategory();
             }
 
 
@@ -179,10 +179,87 @@ public class StreamingService {
         ui.displayMsg("Exiting Chill");
 
     }
+    private void showSeriesByCategory(){
+        String selectedCategorySeries = "repeat";
+        while (selectedCategorySeries == "repeat"){
+            ui.displayMsg("Select a category:\n1. Comedy\n2. Drama\n3. Action\n4. Sci-fi\n5. Romance\n6. Thriller\n" +
+                    "7. Horror\n8. Biography\n9. Family\n10. Adventure\n11. Talk-show\n12. Mystery\n13. Crime\n14. Fantasy\n" +
+                    "15. Sport\n16. History\n17. War\n18. Documentary\n0. Cancel  ");
+
+            int choice = ui.promptNumeric("Enter your choice:");
+
+            switch (choice){
+                case 1: selectedCategorySeries = "Comedy";
+                    break;
+                case 2: selectedCategorySeries = "Drama";
+                    break;
+                case 3: selectedCategorySeries = "Action";
+                    break;
+                case 4: selectedCategorySeries = "Sci-fi";
+                    break;
+                case 5: selectedCategorySeries = "Romance";
+                    break;
+                case 6: selectedCategorySeries = "Thriller";
+                    break;
+                case 7: selectedCategorySeries = "Horror";
+                    break;
+                case 8: selectedCategorySeries = "Biography";
+                    break;
+                case 9: selectedCategorySeries = "Family";
+                    break;
+                case 10: selectedCategorySeries = "Adventure";
+                    break;
+                case 11: selectedCategorySeries = "Talk-show";
+                    break;
+                case 12: selectedCategorySeries = "Mystery";
+                    break;
+                case 13: selectedCategorySeries = "Crime";
+                    break;
+                case 14: selectedCategorySeries = "Fantasy";
+                    break;
+                case 15: selectedCategorySeries = "Sport";
+                    break;
+                case 16: selectedCategorySeries = "History";
+                    break;
+                case 17: selectedCategorySeries = "War";
+                    break;
+                case 18: selectedCategorySeries = "Documentary";
+                    break;
+
+                case 0:
+                    ui.displayMsg("Cancelled.");
+                    return;
+                default:
+                    ui.displayMsg("Invalid choice. Please try again.");
+                    selectedCategorySeries = "repeat";
+            }
+        }
+
+
+        ArrayList<String> lines = io.readData("Data/serier.csv");
+        boolean found = false;
+
+        for (String line : lines) {
+            if (line.contains(selectedCategorySeries)) {
+                ui.displayMsg(line);
+                found = true;
+            }
+
+        }
+
+        if (!found) {
+            ui.displayMsg("No movies found in category: " + selectedCategorySeries);
+        }
+    }
+
+
+
+
+
 
     private void showMoviesByCategory() {
-        String selectedCategory = "repeat";
-        while (selectedCategory == "repeat") {
+        String selectedCategoryMovies = "repeat";
+        while (selectedCategoryMovies == "repeat") {
             ui.displayMsg("Select a category:");
             ui.displayMsg("1. Comedy");
             ui.displayMsg("2. Drama");
@@ -200,57 +277,58 @@ public class StreamingService {
 
             switch (choice) {
                 case 1:
-                    selectedCategory = "Comedy";
+                    selectedCategoryMovies = "Comedy";
                     break;
                 case 2:
-                    selectedCategory = "Drama";
+                    selectedCategoryMovies = "Drama";
                     break;
                 case 3:
-                    selectedCategory = "Action";
+                    selectedCategoryMovies = "Action";
                     break;
                 case 4:
-                    selectedCategory = "Sci-fi";
+                    selectedCategoryMovies = "Sci-fi";
                     break;
                 case 5:
-                    selectedCategory = "Romance";
+                    selectedCategoryMovies = "Romance";
                     break;
                 case 6:
-                    selectedCategory = "Thriller";
+                    selectedCategoryMovies = "Thriller";
                     break;
                 case 7:
-                    selectedCategory = "Horror";
+                    selectedCategoryMovies = "Horror";
                     break;
                 case 8:
-                    selectedCategory = "Biography";
+                    selectedCategoryMovies = "Biography";
                     break;
                 case 9:
-                    selectedCategory = "Family";
+                    selectedCategoryMovies = "Family";
                     break;
                 case 10:
-                    selectedCategory = "Adventure";
+                    selectedCategoryMovies = "Adventure";
                     break;
                 case 0:
                     ui.displayMsg("Cancelled.");
                     return;
                 default:
                     ui.displayMsg("Invalid choice. Please try again.");
-                    selectedCategory = "repeat";
+                    selectedCategoryMovies = "repeat";
             }
         }
 
-        // Read CSV and display matching movies
+
         ArrayList<String> lines = io.readData("Data/film.csv");
         boolean found = false;
 
         for (String line : lines) {
-            if (line.contains(selectedCategory)) {
+            if (line.contains(selectedCategoryMovies)) {
                 ui.displayMsg(line);
                 found = true;
             }
+
         }
 
         if (!found) {
-            ui.displayMsg("No movies found in category: " + selectedCategory);
+            ui.displayMsg("No movies found in category: " + selectedCategoryMovies);
         }
     }
 
