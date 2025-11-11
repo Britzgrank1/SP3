@@ -1,3 +1,5 @@
+package model;
+
 import java.util.Arrays;
 
 public class Season {
@@ -14,7 +16,7 @@ public class Season {
 
     @Override
     public String toString() {
-        return "Season{" +
+        return "model.Season{" +
                 ", episodes=" + episodes.length +
                 '}';
     }

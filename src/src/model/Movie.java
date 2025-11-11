@@ -1,7 +1,8 @@
-import util.FileIO;
+package model;
+
 import util.TextUI;
 
-public class Movie extends Media implements Playable  {
+public class Movie extends Media implements Playable {
     private int duration;
     TextUI ui = new TextUI();
 
@@ -16,7 +17,7 @@ public class Movie extends Media implements Playable  {
 
         @Override
         public String toString () {
-            return "Movie{" +
+            return "model.Movie{" +
                     "duration=" + duration +
                     ", title='" + title + '\'' +
                     ", releaseYear=" + releaseYear +

@@ -1,6 +1,8 @@
+package model;
+
 import util.TextUI;
 
-public class Episode implements Playable{
+public class Episode implements Playable {
     private String title;
     private int episodeNumber;
     private int duration; // i minutter
@@ -34,7 +36,7 @@ public class Episode implements Playable{
 
     @Override
     public String toString() {
-        return "Episode{" +
+        return "model.Episode{" +
                 "title='" + title + '\'' +
                 ", episodeNumber=" + episodeNumber +
                 ", duration=" + duration +

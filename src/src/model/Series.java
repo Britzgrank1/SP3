@@ -1,3 +1,5 @@
+package model;
+
 import java.util.Arrays;
 
 public class Series extends Media {
@@ -18,7 +20,7 @@ public class Series extends Media {
 
     @Override
     public String toString() {
-        return "Series{" +
+        return "model.Series{" +
                 "seasons=" + seasons.length +
                 ", title='" + title + '\'' +
                 ", releaseYear=" + releaseYear +

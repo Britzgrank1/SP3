@@ -1,3 +1,5 @@
+package model;
+
 public abstract class Media {
     protected String title;
     protected int releaseYear;
@@ -20,7 +22,7 @@ public abstract class Media {
 
     @Override
     public String toString() {
-        return "Media{" +
+        return "model.Media{" +
                 "title='" + title + '\'' +
                 ", releaseYear=" + releaseYear +
                 ", category='" + category + '\'' +

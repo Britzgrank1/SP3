@@ -1,5 +1,4 @@
-import util.FileIO;
-import util.TextUI;
+package model;
 
 public interface Playable {
 

@@ -1,4 +1,5 @@
-import util.TextUI;
+package model;
+
 import java.util.ArrayList;
 
 public class User {
