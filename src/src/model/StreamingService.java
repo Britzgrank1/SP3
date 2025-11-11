@@ -81,25 +81,29 @@ public class StreamingService {
     }
 
     public void searchMovie() {
-        ArrayList<String> userData = io.readData("Data/film.csv");
         String searchFilm = TextUI.promptText("Type movie name:");
         boolean found = false;
+
         for (Media m : mediaLibrary) {
-            if (m.getTitle().equalsIgnoreCase(searchFilm)) ;
-            found = true;
-            ui.displayMsg("The movie " + m.getTitle() + " has being found ");
+            if (m.getTitle().equalsIgnoreCase(searchFilm)) {
+                found = true;
+                ui.displayMsg("The movie " + m.getTitle() + " has been found!");
 
+                if (m instanceof Playable) {
+                    Playable playable = (Playable) m;
+                    playable.playMovie();
 
-            if (m instanceof Playable) {
-                Playable playable = (Playable) m;
-                playable.playMovie();
-            } else {
-                ui.displayMsg("This movie does not exist..");
+                    currentUser.addSeen(m.getTitle());
+                    watchedList(m);
+                    ui.displayMsg("Saved to watched list: " + m.getTitle());
+                } else {
+                    ui.displayMsg("This movie cannot be played.");
+                }
+                break;
             }
-            break;
         }
         if (!found) {
-            ui.displayMsg("model.Movie not found, Try again!");
+            ui.displayMsg("Movie not found, try again!");
             searchMovie();
         }
     }
