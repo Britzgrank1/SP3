@@ -18,6 +18,7 @@ public class StreamingService {
 
     public void startSession() {
         userManager.loadUsers();
+        loadAllMedia();
         ui.displayMsg("Welcome to Chill");
         System.out.println();
         int choice = ui.promptNumeric("Press 1 for login\nPress 2 for create new user\nPress 3 to list all users\nPress 4 delete user\nPress 0 to exit Chill");
@@ -113,22 +114,42 @@ public class StreamingService {
                 ui.displayMsg("Unknown media type.");
         }
     }
-    public void userMenu (Media media){
-        ui.displayMsg("You chose: " + media.getTitle());
-        ui.displayMsg("1) Play");
-        ui.displayMsg("2) Save for later");
-        ui.displayMsg("3) Remove from saved list");
-        ui.displayMsg("0) Back");
+    private void loadAllMedia() {
+        mediaLibrary.clear();
 
-        int choice = ui.promptNumeric("Choose an option: ");
-        switch (choice) {
-            case 1 -> playMedia(media);
-            case 2 -> watchedList(media);
-            case 3 -> removeFromList(media);
-            case 0 -> ui.displayMsg("Returning...");
-            default -> ui.displayMsg("Invalid choice");
+        ArrayList<String> films = io.readData("Data/film.csv");
+        ArrayList<String> series = io.readData("Data/series.csv");
+
+        // Movies
+        for (String f : films) {
+            if (f.length() > 1) {
+                String title = "";
+                for (String letter : f.split("")) {
+                    if (letter.equals(";")) {
+                        break;
+                    }
+                    title += letter;
+                }
+                mediaLibrary.add(new Movie(title));
+            }
         }
+
+        // Series
+        for (String s : series) {
+            if (s.length() > 1) {
+                String title = "";
+                for (String letter : s.split("")) {
+                    if (letter.equals(";")) {
+                        break;
+                    }
+                    title += letter;
+                }
+                mediaLibrary.add(new Series(title));
+            }
+        }
+        ui.displayMsg(mediaLibrary.size() + " movies and series loaded.");
     }
+
             private void removeFromList (Media media){
                 if (currentUser.getSeen().remove(media.getTitle())) {
                     ui.displayMsg(media.getTitle() + " removed from saved list.");
