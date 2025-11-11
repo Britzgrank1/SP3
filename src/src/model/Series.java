@@ -1,3 +1,5 @@
+package model;
+
 import util.TextUI;
 
 public class Series extends Media implements Playable {

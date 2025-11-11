@@ -98,20 +98,21 @@ public class StreamingService {
             searchMovie();
         }
     }
-        private void playMedia (Media media) {
+         private void playMedia(Media media) {
             if (media instanceof Movie m) {
                 m.playMovie();
-            } else if (media instanceof Series s) {
-                ui.displayMsg("Playing series: " + s.getTitle());
-                for (Season season : s.getSeasons()) {
-                    for (Episode ep : season.getEpisodes()) {
-                        ep.playMovie();
-                    }
-                }
+                currentUser.addSeen(m.getTitle());
+                ui.displayMsg("Saved to watched list: " + m.getTitle());
             }
-            currentUser.addSeen(media.getTitle());
-            saveToWatched();
+            else if (media instanceof Series s) {
+                s.playMovie();
+                currentUser.addSeen(s.getTitle());
+                ui.displayMsg("Saved to watched list: " + s.getTitle());
+            }
+            else {
+                ui.displayMsg("Unknown media type.");
         }
+    }
     public void userMenu (Media media){
         ui.displayMsg("You chose: " + media.getTitle());
         ui.displayMsg("1) Play");
