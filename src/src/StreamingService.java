@@ -53,7 +53,6 @@ public class StreamingService {
                     && u.getPassword().equals(password)) {
                 userExists = true;
                 currentUser = u;
-                break;
             }
         }
 
@@ -127,7 +126,6 @@ public class StreamingService {
                     && u.getPassword().equals(password)) {
                 userExists = true;
                 currentUser = u;
-                break;
             }
         }
         if (userExists) {
@@ -170,8 +168,8 @@ public class StreamingService {
     }
 
     public void saveToWatched() {
-        File watchedFile = new File(currentUser.getUsername() + "_watched.csv");
-        try (FileWriter writer = new FileWriter(watchedFile)) {
+
+        try (FileWriter writer = new FileWriter("Data/"+currentUser+"watchedList.csv")) {
             writer.write("Watched Titles\n");
 
             for (String title : currentUser.getSeen()) {
