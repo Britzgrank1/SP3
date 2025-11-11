@@ -15,6 +15,8 @@ public class StreamingService {
 
     public void startSession() {
         ui.displayMsg("Welcome to Chill");
+        loadUsers();
+        loadAllMedia();
         System.out.println();
         int choice = ui.promptNumeric("Press 1 for login\nPress 2 for create new user\nPress 3 to list all users\nPress 4 delete user\nPress 0 to exit Chill");
 
@@ -59,6 +61,7 @@ public class StreamingService {
 
         if (userExists) {
             System.out.println("Login successful! Welcome " + currentUser.getUsername());
+            userSession();
 
         } else {
             System.out.println("Username or password incorrect. Please try again.");
@@ -183,42 +186,52 @@ public class StreamingService {
     }
 
     public void searchMovie() {
-        ArrayList<String> userData = io.readData("Data/film.csv");
         String searchFilm = TextUI.promptText("Type movie name:");
         boolean found = false;
+
         for (Media m : mediaLibrary) {
-            if (m.getTitle().equalsIgnoreCase(searchFilm)) ;
-            found = true;
-            ui.displayMsg("The movie " + m.getTitle() + " has being found ");
+            if (m.getTitle().equalsIgnoreCase(searchFilm)) {
+                found = true;
+                ui.displayMsg("The movie " + m.getTitle() + " has been found!");
 
+                if (m instanceof Playable) {
+                    Playable playable = (Playable) m;
+                    playable.playMovie();
 
-            if (m instanceof Playable) {
-                Playable playable = (Playable) m;
-                playable.playMovie();
-            } else {
-                ui.displayMsg("This movie does not exist..");
+                    currentUser.addSeen(m.getTitle());
+                    watchedList(m);
+                    ui.displayMsg("Saved to watched list: " + m.getTitle());
+                } else {
+                    ui.displayMsg("This movie cannot be played.");
+                }
+                break;
             }
-            break;
         }
         if (!found) {
-            ui.displayMsg("Movie not found, Try again!");
+            ui.displayMsg("Movie not found, try again!");
             searchMovie();
         }
     }
-        private void playMedia (Media media) {
-            if (media instanceof Movie m) {
-                m.playMovie();
-            } else if (media instanceof Series s) {
-                ui.displayMsg("Playing series: " + s.getTitle());
-                for (Season season : s.getSeasons()) {
-                    for (Episode ep : season.getEpisodes()) {
-                        ep.playMovie();
-                    }
-                }
-            }
-            currentUser.addSeen(media.getTitle());
-            saveToWatched();
+
+
+
+
+    private void playMedia(Media media) {
+        if (media instanceof Movie m) {
+            m.playMovie();
+            currentUser.addSeen(m.getTitle());
+            ui.displayMsg("Saved to watched list: " + m.getTitle());
         }
+        else if (media instanceof Series s) {
+            s.playMovie();
+            currentUser.addSeen(s.getTitle());
+            ui.displayMsg("Saved to watched list: " + s.getTitle());
+        }
+        else {
+            ui.displayMsg("Unknown media type.");
+        }
+    }
+
 
             private void userMenu (Media media){
                 ui.displayMsg("You chose: " + media.getTitle());
@@ -246,7 +259,83 @@ public class StreamingService {
         }
 
 
-        public void endSession () {
+    private void loadAllMedia() {
+        mediaLibrary.clear();
+
+        ArrayList<String> films = io.readData("Data/film.csv");
+        ArrayList<String> series = io.readData("Data/series.csv");
+
+        // Movies
+        for (String f : films) {
+            if (f.length() > 1) {
+                String title = "";
+                for (String letter : f.split("")) {
+                    if (letter.equals(";")) {
+                        break;
+                    }
+                    title += letter;
+                }
+                mediaLibrary.add(new Movie(title));
+            }
+        }
+
+        // Series
+        for (String s : series) {
+            if (s.length() > 1) {
+                String title = "";
+                for (String letter : s.split("")) {
+                    if (letter.equals(";")) {
+                        break;
+                    }
+                    title += letter;
+                }
+                mediaLibrary.add(new Series(title));
+            }
+        }
+
+        ui.displayMsg(mediaLibrary.size() + " movies and series loaded.");
+    }
+
+
+    private void userSession() {
+        boolean running = true;
+
+        while (running) {
+            int choice = ui.promptNumeric(
+                    "\nUser Menu for " + currentUser.getUsername() + ":\n" +
+                            "1) Search for a movie or series\n" +
+                            "2) View watched list\n" +
+                            "3) Log out"
+            );
+
+            if (choice == 1) {
+                searchMovie();
+            } else if (choice == 2) {
+                showWatchedList();
+            } else if (choice == 3) {
+                ui.displayMsg("Logging out...");
+                running = false;
+                startSession();
+            } else {
+                ui.displayMsg("Invalid choice. Try again.");
+            }
+        }
+    }
+
+    private void showWatchedList() {
+        ui.displayMsg("\nWatched titles for " + currentUser.getUsername() + ":");
+        if (currentUser.getSeen().isEmpty()) {
+            ui.displayMsg("You haven't watched anything yet!");
+        } else {
+            for (String title : currentUser.getSeen()) {
+                ui.displayMsg("- " + title);
+            }
+        }
+    }
+
+
+
+    public void endSession () {
             ui.displayMsg("Exiting Chill");
 
         }

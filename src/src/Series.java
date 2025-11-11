@@ -1,29 +1,13 @@
-import java.util.Arrays;
+import util.TextUI;
 
-public class Series extends Media {
-    private Season[] seasons = new Season[0];
+public class Series extends Media implements Playable {
+    private TextUI ui = new TextUI();
 
-    public Series(String title, int releaseYear, String category, double rating) {
-        super(title, releaseYear, category, rating);
+    public Series(String title) {
+        super(title);
     }
 
-    public void addSeason(Season s) {
-        seasons = Arrays.copyOf(seasons, seasons.length + 1);
-        seasons[seasons.length - 1] = s;
-    }
-
-    public Season[] getSeasons() {
-        return seasons;
-    }
-
-    @Override
-    public String toString() {
-        return "Series{" +
-                "seasons=" + seasons.length +
-                ", title='" + title + '\'' +
-                ", releaseYear=" + releaseYear +
-                ", category='" + category + '\'' +
-                ", rating=" + rating +
-                '}';
+    public void playMovie() {
+        ui.displayMsg("Now streaming series: " + title);
     }
 }
