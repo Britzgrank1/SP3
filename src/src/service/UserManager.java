@@ -29,7 +29,7 @@ public class UserManager {
         }
         if (userExists) {
             System.out.println("Login successful! Welcome " + currentUser.getUsername());
-
+            userSession();
         } else {
             System.out.println("Username or password incorrect. Please try again.");
             int tryAgain = ui.promptNumeric("Press 1 to try again\nPress 2 to return to main menu");
@@ -118,5 +118,28 @@ public class UserManager {
             e.printStackTrace();
         }
     }
+    private void userSession() {
+        boolean running = true;
 
+        while (running) {
+            int choice = ui.promptNumeric(
+                    "\nUser Menu for " + currentUser.getUsername() + ":\n" +
+                            "1) Search for a movie or series\n" +
+                            "2) View watched list\n" +
+                            "3) Log out"
+            );
+
+            if (choice == 1) {
+                s.searchMovie();
+            } else if (choice == 2) {
+                s.showWatchedList();
+            } else if (choice == 3) {
+                ui.displayMsg("Logging out...");
+                running = false;
+                s.startSession();
+            } else {
+                ui.displayMsg("Invalid choice. Try again.");
+            }
+        }
+    }
 }

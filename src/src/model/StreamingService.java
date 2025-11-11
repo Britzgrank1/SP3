@@ -136,7 +136,7 @@ public class StreamingService {
                     ui.displayMsg(media.getTitle() + " was not in saved list.");
                 }
         }
-    private void showWatchedList() {
+    public void showWatchedList() {
         ui.displayMsg("\nWatched titles for " + currentUser.getUsername() + ":");
         if (currentUser.getSeen().isEmpty()) {
             ui.displayMsg("You haven't watched anything yet!");
