@@ -5,6 +5,8 @@ public class User {
     protected String username;
     protected String password;
     ArrayList<String> seen = new ArrayList<>();
+    ArrayList<String> favourites = new ArrayList<>();
+
 
 
     public User(String username, String password) {
@@ -39,6 +41,18 @@ public class User {
             seen.add(mediaTitle);
         }
     }
+
+
+    public ArrayList<String> getFavourites() {
+        return favourites;
+    }
+
+    public void addFavourite(String title) {
+        if (!favourites.contains(title)) {
+            favourites.add(title);
+        }
+    }
+
 
 
 

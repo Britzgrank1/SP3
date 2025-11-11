@@ -61,7 +61,7 @@ public class StreamingService {
 
         if (userExists) {
             System.out.println("Login successful! Welcome " + currentUser.getUsername());
-            userSession();
+            userMenu();
 
         } else {
             System.out.println("Username or password incorrect. Please try again.");
@@ -170,20 +170,30 @@ public class StreamingService {
         }
     }
 
-    public void saveToWatched() {
-
-        try (FileWriter writer = new FileWriter("Data/"+currentUser+"watchedList.csv")) {
-            writer.write("Watched Titles\n");
-
-            for (String title : currentUser.getSeen()) {
-                writer.write(title + "\n");
+    public void favouritesList() {
+        String title = TextUI.promptText("Type the name of the movie or series to add to favourites:");
+        File favouritesFile = new File("Data/" + currentUser.getUsername() + "Favourites.csv");
+        try (FileWriter writer = new FileWriter(favouritesFile, true)) {
+            if (favouritesFile.length() == 0) {
+                writer.write("Favourites\n");
             }
-            ui.displayMsg("Watched list saved for user: " + currentUser.getUsername());
+            writer.write(title + "\n");
         } catch (IOException e) {
-            ui.displayMsg("Error saving watched list: " + e.getMessage());
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
+
+    private void showFavourites() {
+        ui.displayMsg("\nFavourite titles for " + currentUser.getUsername() + ":");
+        if (currentUser.getFavourites().isEmpty()) {
+            ui.displayMsg("You haven't added any favourites yet!");
+        } else {
+            for (String title : currentUser.getFavourites()) {
+                ui.displayMsg("- " + title);
+            }
+        }
+    }
+
 
     public void searchMovie() {
         String searchFilm = TextUI.promptText("Type movie name:");
@@ -232,24 +242,6 @@ public class StreamingService {
         }
     }
 
-
-            private void userMenu (Media media){
-                ui.displayMsg("You chose: " + media.getTitle());
-                ui.displayMsg("1) Play");
-                ui.displayMsg("2) Save for later");
-                ui.displayMsg("3) Remove from saved list");
-                ui.displayMsg("0) Back");
-
-                int choice = ui.promptNumeric("Choose an option: ");
-                switch (choice) {
-                    case 1 -> playMedia(media);
-                    case 2 -> watchedList(media);
-                    case 3 -> removeFromList(media);
-                    case 0 -> ui.displayMsg("Returning...");
-                    default -> ui.displayMsg("Invalid choice");
-                }
-            }
-
             private void removeFromList (Media media){
                 if (currentUser.getSeen().remove(media.getTitle())) {
                     ui.displayMsg(media.getTitle() + " removed from saved list.");
@@ -257,7 +249,6 @@ public class StreamingService {
                     ui.displayMsg(media.getTitle() + " was not in saved list.");
                 }
         }
-
 
     private void loadAllMedia() {
         mediaLibrary.clear();
@@ -297,26 +288,34 @@ public class StreamingService {
     }
 
 
-    private void userSession() {
-        boolean running = true;
-
-        while (running) {
-            int choice = ui.promptNumeric(
-                    "\nUser Menu for " + currentUser.getUsername() + ":\n" +
-                            "1) Search for a movie or series\n" +
-                            "2) View watched list\n" +
-                            "3) Log out"
+    private void userMenu() {
+        while (true) {
+            int choice = ui.promptNumeric("\nUser Menu for " + currentUser.getUsername() + ":\n" +
+                    "1) Search for a movie or series\n" +
+                    "2) View watched list\n" +
+                    "3) View favourites\n" +
+                    "4) Add a favourite manually\n" +
+                    "5) Log out"
             );
 
             if (choice == 1) {
                 searchMovie();
             } else if (choice == 2) {
+                loadWatchedList();
                 showWatchedList();
             } else if (choice == 3) {
+                loadFavourites();
+                showFavourites();
+            } else if (choice == 4){
+                favouritesList();
+            }
+
+            else if (choice == 5) {
                 ui.displayMsg("Logging out...");
-                running = false;
                 startSession();
-            } else {
+            }
+
+            else {
                 ui.displayMsg("Invalid choice. Try again.");
             }
         }
@@ -333,6 +332,55 @@ public class StreamingService {
         }
     }
 
+
+    public void loadFavourites() {
+        String fileName = "Data/" + currentUser.getUsername() + "Favourites.csv";
+        File favouritesFile = new File(fileName);
+
+        if (!favouritesFile.exists()) {
+            ui.displayMsg("No favourites file found for " + currentUser.getUsername() + ".");
+            return;
+        }
+
+        ArrayList<String> lines = io.readData(fileName);
+        currentUser.getFavourites().clear();
+
+        for (String line : lines) {
+            boolean isHeader = line.equalsIgnoreCase("Favourites");
+            boolean isEmpty = line.isEmpty();
+
+            if (!isHeader && !isEmpty) {
+                currentUser.addFavourite(line.trim());
+            }
+        }
+
+        ui.displayMsg("Loaded " + currentUser.getFavourites().size() + " favourites for " + currentUser.getUsername() + ".");
+    }
+
+
+    public void loadWatchedList() {
+        String fileName = "Data/" + currentUser.getUsername() + "watchedList.csv";
+        File watchedFile = new File(fileName);
+
+        if (!watchedFile.exists()) {
+            ui.displayMsg("No watched list found for " + currentUser.getUsername() + ".");
+            return;
+        }
+
+        ArrayList<String> lines = io.readData(fileName);
+        currentUser.getSeen().clear();
+
+        for (String line : lines) {
+            boolean isHeader = line.equalsIgnoreCase("Watched Titles");
+            boolean isEmpty = line.isEmpty();
+
+            if (!isHeader && !isEmpty) {
+                currentUser.addSeen(line);
+            }
+        }
+
+        ui.displayMsg("Loaded " + currentUser.getSeen().size() + " watched titles for " + currentUser.getUsername() + ".");
+    }
 
 
     public void endSession () {
