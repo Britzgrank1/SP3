@@ -276,35 +276,25 @@ public class StreamingService {
             int choice = ui.promptNumeric("Enter your choice:");
 
             switch (choice) {
-                case 1:
-                    selectedCategoryMovies = "Comedy";
+                case 1: selectedCategoryMovies = "Comedy";
                     break;
-                case 2:
-                    selectedCategoryMovies = "Drama";
+                case 2: selectedCategoryMovies = "Drama";
                     break;
-                case 3:
-                    selectedCategoryMovies = "Action";
+                case 3: selectedCategoryMovies = "Action";
                     break;
-                case 4:
-                    selectedCategoryMovies = "Sci-fi";
+                case 4: selectedCategoryMovies = "Sci-fi";
                     break;
-                case 5:
-                    selectedCategoryMovies = "Romance";
+                case 5: selectedCategoryMovies = "Romance";
                     break;
-                case 6:
-                    selectedCategoryMovies = "Thriller";
+                case 6: selectedCategoryMovies = "Thriller";
                     break;
-                case 7:
-                    selectedCategoryMovies = "Horror";
+                case 7: selectedCategoryMovies = "Horror";
                     break;
-                case 8:
-                    selectedCategoryMovies = "Biography";
+                case 8: selectedCategoryMovies = "Biography";
                     break;
-                case 9:
-                    selectedCategoryMovies = "Family";
+                case 9: selectedCategoryMovies = "Family";
                     break;
-                case 10:
-                    selectedCategoryMovies = "Adventure";
+                case 10: selectedCategoryMovies = "Adventure";
                     break;
                 case 0:
                     ui.displayMsg("Cancelled.");
