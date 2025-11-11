@@ -13,7 +13,11 @@ public class StreamingService {
     TextUI ui = new TextUI();
     FileIO io = new FileIO();
     User currentUser;
-    UserManager userManager = new UserManager();
+    UserManager userManager = new UserManager(this);
+
+    public void setCurrentUser(User user){
+        this.currentUser = user;
+    }
 
 
     public void startSession() {
@@ -167,7 +171,30 @@ public class StreamingService {
             }
         }
     }
+    public void userSession() {
+        boolean running = true;
 
+        while (running) {
+            int choice = ui.promptNumeric(
+                    "\nUser Menu for " + currentUser.getUsername() + ":\n" +
+                            "1) Search for a movie or series\n" +
+                            "2) View watched list\n" +
+                            "3) Log out"
+            );
+
+            if (choice == 1) {
+                searchMovie();
+            } else if (choice == 2) {
+                showWatchedList();
+            } else if (choice == 3) {
+                ui.displayMsg("Logging out...");
+                running = false;
+                startSession();
+            } else {
+                ui.displayMsg("Invalid choice. Try again.");
+            }
+        }
+    }
 
         public void endSession () {
             ui.displayMsg("Exiting Chill");
