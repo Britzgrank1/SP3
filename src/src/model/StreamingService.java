@@ -87,10 +87,24 @@ public class StreamingService {
         for (Media m : mediaLibrary) {
             if (m.getTitle().equalsIgnoreCase(searchFilm)) {
                 found = true;
+                Playable playable = (Playable) m;
+
                 ui.displayMsg("The movie " + m.getTitle() + " has been found!");
 
+                int choice = ui.promptNumeric("Choose and action" +
+                        "1)Play Moive" +
+                        "2)Pause Movie " +
+                        "3)Stop Moive" +
+                        "4)Go back to menu"
+                );
+
+                if (choice == 1) playable.playMovie();
+                else if(choice == 2) playable.pauseMovie();
+                else if(choice == 3) playable.stopMovie();
+                else if (choice == 4) userSession();
+
                 if (m instanceof Playable) {
-                    Playable playable = (Playable) m;
+
                     playable.playMovie();
 
                     currentUser.addSeen(m.getTitle());
@@ -175,7 +189,17 @@ public class StreamingService {
             }
         }
     }
-    public void userSession() {
+    public void deleteSavedMedia() {
+        showWatchedList();
+        try (FileWriter writer = new FileWriter("Data/" + currentUser.getUsername() + "watchedList.csv")) {
+            writer.write("Watched Titles\n");
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+        public void userSession() {
         boolean running = true;
 
         while (running) {
