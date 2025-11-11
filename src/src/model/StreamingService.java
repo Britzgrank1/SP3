@@ -136,6 +136,16 @@ public class StreamingService {
                     ui.displayMsg(media.getTitle() + " was not in saved list.");
                 }
         }
+    private void showWatchedList() {
+        ui.displayMsg("\nWatched titles for " + currentUser.getUsername() + ":");
+        if (currentUser.getSeen().isEmpty()) {
+            ui.displayMsg("You haven't watched anything yet!");
+        } else {
+            for (String title : currentUser.getSeen()) {
+                ui.displayMsg("- " + title);
+            }
+        }
+    }
 
 
         public void endSession () {
