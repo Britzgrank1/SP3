@@ -15,7 +15,7 @@ public class StreamingService {
     User currentUser;
     UserManager userManager = new UserManager(this);
 
-    public void setCurrentUser(User user){
+    public void setCurrentUser(User user) {
         this.currentUser = user;
     }
 
@@ -213,15 +213,15 @@ public class StreamingService {
     }
 
     public void deleteSavedMedia() {
-            loadFavourites();
-            if(currentUser.getFavourites().isEmpty()){
-                ui.displayMsg("List is empty");
-                return;
+        loadFavourites();
+        if (currentUser.getFavourites().isEmpty()) {
+            ui.displayMsg("List is empty");
+            return;
         }
-            ui.displayMsg("\nYour current favourite list");
-            ArrayList<String> favourites = currentUser.getFavourites();
-        for(int i = 0; i<favourites.size(); i++){
-            ui.displayMsg((i+1) + ") " + favourites.get(i));
+        ui.displayMsg("\nYour current favourite list");
+        ArrayList<String> favourites = currentUser.getFavourites();
+        for (int i = 0; i < favourites.size(); i++) {
+            ui.displayMsg((i + 1) + ") " + favourites.get(i));
         }
 
         int choice = ui.promptNumeric("Select a number to delete media from favourites, press 0 to cancel");
@@ -235,9 +235,9 @@ public class StreamingService {
         }
         String removed = favourites.remove(choice - 1);
         ui.displayMsg(removed + " is removed from list");
-        String fileName = "Data/" + currentUser.getUsername()+"Favourites.csv";
+        String fileName = "Data/" + currentUser.getUsername() + "Favourites.csv";
         try (FileWriter writer = new FileWriter(fileName)) {
-                writer.write("Favourites\n");
+            writer.write("Favourites\n");
             for (String favourite : favourites) {
                 writer.write(favourite + "\n");
             }
@@ -253,7 +253,7 @@ public class StreamingService {
                     "2) View watched list\n" +
                     "3) View favourites\n" +
                     "4) Add a favourite manually\n" +
-                    "5) Delete saved media\n"+
+                    "5) Delete saved media\n" +
                     "6) Log out"
             );
 
@@ -267,7 +267,7 @@ public class StreamingService {
                 showFavourites();
             } else if (choice == 4) {
                 favouritesList();
-            } else if (choice == 5){
+            } else if (choice == 5) {
                 deleteSavedMedia();
             } else if (choice == 6) {
                 ui.displayMsg("Logging out...");
@@ -326,57 +326,8 @@ public class StreamingService {
 
         ui.displayMsg("Loaded " + currentUser.getSeen().size() + " watched titles for " + currentUser.getUsername() + ".");
     }
-        public void endSession () {
-            ui.displayMsg("Exiting Chill");
-    public void loadFavourites() {
-        String fileName = "Data/" + currentUser.getUsername() + "Favourites.csv";
-        File favouritesFile = new File(fileName);
 
-        if (!favouritesFile.exists()) {
-            ui.displayMsg("No favourites file found for " + currentUser.getUsername() + ".");
-            return;
-        }
-
-        ArrayList<String> lines = io.readData(fileName);
-        currentUser.getFavourites().clear();
-
-        for (String line : lines) {
-            boolean isHeader = line.equalsIgnoreCase("Favourites");
-            boolean isEmpty = line.isEmpty();
-
-            if (!isHeader && !isEmpty) {
-                currentUser.addFavourite(line.trim());
-            }
-        }
-
-        ui.displayMsg("Loaded " + currentUser.getFavourites().size() + " favourites for " + currentUser.getUsername() + ".");
-    }
-
-
-    public void loadWatchedList() {
-        String fileName = "Data/" + currentUser.getUsername() + "watchedList.csv";
-        File watchedFile = new File(fileName);
-
-        if (!watchedFile.exists()) {
-            ui.displayMsg("No watched list found for " + currentUser.getUsername() + ".");
-            return;
-        }
-
-        ArrayList<String> lines = io.readData(fileName);
-        currentUser.getSeen().clear();
-
-        for (String line : lines) {
-            boolean isHeader = line.equalsIgnoreCase("Watched Titles");
-            boolean isEmpty = line.isEmpty();
-
-            if (!isHeader && !isEmpty) {
-                currentUser.addSeen(line);
-            }
-        }
-
-        ui.displayMsg("Loaded " + currentUser.getSeen().size() + " watched titles for " + currentUser.getUsername() + ".");
-    }
-    public void endSession () {
+    public void endSession() {
         ui.displayMsg("Exiting Chill");
 
     }
