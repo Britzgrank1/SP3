@@ -199,6 +199,9 @@ public class StreamingService {
             }
         }
     }
+        public void deleteFromFavorites(Media media){
+
+        }
 
         public void endSession () {
             ui.displayMsg("Exiting Chill");
