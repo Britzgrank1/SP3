@@ -190,59 +190,41 @@ public class StreamingService {
             int choice = ui.promptNumeric("Enter your choice:");
 
             switch (choice) {
-                case 1:
-                    selectedCategorySeries = "Comedy";
+                case 1: selectedCategorySeries = "Comedy";
                     break;
-                case 2:
-                    selectedCategorySeries = "Drama";
+                case 2: selectedCategorySeries = "Drama";
                     break;
-                case 3:
-                    selectedCategorySeries = "Action";
+                case 3: selectedCategorySeries = "Action";
                     break;
-                case 4:
-                    selectedCategorySeries = "Sci-fi";
+                case 4: selectedCategorySeries = "Sci-fi";
                     break;
-                case 5:
-                    selectedCategorySeries = "Romance";
+                case 5: selectedCategorySeries = "Romance";
                     break;
-                case 6:
-                    selectedCategorySeries = "Thriller";
+                case 6: selectedCategorySeries = "Thriller";
                     break;
-                case 7:
-                    selectedCategorySeries = "Horror";
+                case 7: selectedCategorySeries = "Horror";
                     break;
-                case 8:
-                    selectedCategorySeries = "Biography";
+                case 8: selectedCategorySeries = "Biography";
                     break;
-                case 9:
-                    selectedCategorySeries = "Family";
+                case 9: selectedCategorySeries = "Family";
                     break;
-                case 10:
-                    selectedCategorySeries = "Adventure";
+                case 10: selectedCategorySeries = "Adventure";
                     break;
-                case 11:
-                    selectedCategorySeries = "Talk-show";
+                case 11: selectedCategorySeries = "Talk-show";
                     break;
-                case 12:
-                    selectedCategorySeries = "Mystery";
+                case 12: selectedCategorySeries = "Mystery";
                     break;
-                case 13:
-                    selectedCategorySeries = "Crime";
+                case 13: selectedCategorySeries = "Crime";
                     break;
-                case 14:
-                    selectedCategorySeries = "Fantasy";
+                case 14: selectedCategorySeries = "Fantasy";
                     break;
-                case 15:
-                    selectedCategorySeries = "Sport";
+                case 15: selectedCategorySeries = "Sport";
                     break;
-                case 16:
-                    selectedCategorySeries = "History";
+                case 16: selectedCategorySeries = "History";
                     break;
-                case 17:
-                    selectedCategorySeries = "War";
+                case 17: selectedCategorySeries = "War";
                     break;
-                case 18:
-                    selectedCategorySeries = "Documentary";
+                case 18: selectedCategorySeries = "Documentary";
                     break;
 
                 case 0:
@@ -256,18 +238,37 @@ public class StreamingService {
 
 
         ArrayList<String> lines = io.readData("Data/serier.csv");
-        boolean found = false;
+        ArrayList<Series> foundSeries = new ArrayList<>();
 
         for (String line : lines) {
             if (line.contains(selectedCategorySeries)) {
-                ui.displayMsg(line);
-                found = true;
+                String[] info = line.split(";");
+                if (info.length >= 4) {
+                    String title = info[0];
+                    int releaseYear = Integer.parseInt(info[1].trim());
+                    String category = info[2].trim();
+                    double rating = Double.parseDouble(info[3].trim().replace(",","."));
+                    foundSeries.add(new Series(title, releaseYear, category, rating, 0));
+                }
             }
-
         }
 
-        if (!found) {
-            ui.displayMsg("No movies found in category: " + selectedCategorySeries);
+        if (foundSeries.isEmpty()) {
+            ui.displayMsg("No series found in category: " + selectedCategorySeries);
+            return;
+        }
+
+        ui.displayMsg("Series in " + selectedCategorySeries + " category:");
+        for (int i = 0; i < foundSeries.size(); i++) {
+            ui.displayMsg((i + 1) + ". " + foundSeries.get(i).getTitle());
+        }
+
+        int choice = ui.promptNumeric("Choose a series to play:");
+        if (choice > 0 && choice <= foundSeries.size()) {
+            Series selected = foundSeries.get(choice - 1);
+            ui.displayMsg("You're now watching" + selected.getTitle());
+        } else {
+            ui.displayMsg("Cancelled.");
         }
     }
 
@@ -291,35 +292,25 @@ public class StreamingService {
             int choice = ui.promptNumeric("Enter your choice:");
 
             switch (choice) {
-                case 1:
-                    selectedCategoryMovies = "Comedy";
+                case 1: selectedCategoryMovies = "Comedy";
                     break;
-                case 2:
-                    selectedCategoryMovies = "Drama";
+                case 2: selectedCategoryMovies = "Drama";
                     break;
-                case 3:
-                    selectedCategoryMovies = "Action";
+                case 3: selectedCategoryMovies = "Action";
                     break;
-                case 4:
-                    selectedCategoryMovies = "Sci-fi";
+                case 4: selectedCategoryMovies = "Sci-fi";
                     break;
-                case 5:
-                    selectedCategoryMovies = "Romance";
+                case 5: selectedCategoryMovies = "Romance";
                     break;
-                case 6:
-                    selectedCategoryMovies = "Thriller";
+                case 6: selectedCategoryMovies = "Thriller";
                     break;
-                case 7:
-                    selectedCategoryMovies = "Horror";
+                case 7: selectedCategoryMovies = "Horror";
                     break;
-                case 8:
-                    selectedCategoryMovies = "Biography";
+                case 8: selectedCategoryMovies = "Biography";
                     break;
-                case 9:
-                    selectedCategoryMovies = "Family";
+                case 9: selectedCategoryMovies = "Family";
                     break;
-                case 10:
-                    selectedCategoryMovies = "Adventure";
+                case 10: selectedCategoryMovies = "Adventure";
                     break;
                 case 0:
                     ui.displayMsg("Cancelled.");
@@ -329,7 +320,40 @@ public class StreamingService {
                     selectedCategoryMovies = "repeat";
             }
         }
+
         ArrayList<String> lines = io.readData("Data/film.csv");
         ArrayList<Movie> foundMovies = new ArrayList<>();
+
+        for (String line : lines) {
+            if (line.contains(selectedCategoryMovies)) {
+                String[] info = line.split(";");
+                if (info.length >= 4) {
+                    String title = info[0];
+                    int releaseYear = Integer.parseInt(info[1].trim());
+                    String category = info[2].trim();
+                    double rating = Double.parseDouble(info[3].trim().replace(",","."));
+                    foundMovies.add(new Movie(title, releaseYear, category, rating));
+                }
+            }
+        }
+
+        if (foundMovies.isEmpty()) {
+            ui.displayMsg("No movies found in category: " + selectedCategoryMovies);
+            return;
+        }
+
+        ui.displayMsg("Movies in " + selectedCategoryMovies + " category:");
+        for (int i = 0; i < foundMovies.size(); i++) {
+            ui.displayMsg((i + 1) + ". " + foundMovies.get(i).getTitle());
+        }
+
+        int choice = ui.promptNumeric("Choose a movie to play(0 to cancel):");
+        if (choice > 0 && choice <= foundMovies.size()) {
+            Movie selected = foundMovies.get(choice - 1);
+            selected.playMovie();
+        } else {
+            ui.displayMsg("Cancelled.");
+        }
     }
 }
+
