@@ -6,7 +6,18 @@ public class User {
     protected String username;
     protected String password;
     ArrayList<String> seen = new ArrayList<>();
+    ArrayList<String> favourites = new ArrayList<>();
 
+
+    public ArrayList<String> getFavourites() {
+        return favourites;
+    }
+
+    public void addFavourite(String title) {
+        if (!favourites.contains(title)) {
+            favourites.add(title);
+        }
+    }
 
     public User(String username, String password) {
         this.username = username;

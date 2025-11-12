@@ -34,7 +34,7 @@ public class UserManager {
         if (userExists) {
             System.out.println("Login successful! Welcome " + currentUser.getUsername());
             s.setCurrentUser(currentUser);
-            s.userSession();
+            s.userMenu();
         } else {
             System.out.println("Username or password incorrect. Please try again.");
             int tryAgain = ui.promptNumeric("Press 1 to try again\nPress 2 to return to main menu");

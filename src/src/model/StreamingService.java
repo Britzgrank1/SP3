@@ -15,7 +15,7 @@ public class StreamingService {
     User currentUser;
     UserManager userManager = new UserManager(this);
 
-    public void setCurrentUser(User user){
+    public void setCurrentUser(User user) {
         this.currentUser = user;
     }
 
@@ -45,7 +45,8 @@ public class StreamingService {
             ui.displayMsg("Returning...");
             startSession();
         } else if (choice == 0) {
-
+            endSession();
+            System.exit(0);
         } else {
             ui.displayMsg("Invalid choice, try again");
             startSession();
@@ -67,7 +68,7 @@ public class StreamingService {
 
     public void saveToWatched() {
 
-        try (FileWriter writer = new FileWriter("Data/"+currentUser.getUsername()+"watchedList.csv")) {
+        try (FileWriter writer = new FileWriter("Data/" + currentUser.getUsername() + "watchedList.csv")) {
             writer.write("Watched Titles\n");
 
             for (String title : currentUser.getSeen()) {
@@ -80,6 +81,30 @@ public class StreamingService {
         }
     }
 
+    public void favouritesList() {
+        String title = TextUI.promptText("Type the name of the movie or series to add to favourites:");
+        File favouritesFile = new File("Data/" + currentUser.getUsername() + "Favourites.csv");
+        try (FileWriter writer = new FileWriter(favouritesFile, true)) {
+            if (favouritesFile.length() == 0) {
+                writer.write("Favourites\n");
+            }
+            writer.write(title + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showFavourites() {
+        ui.displayMsg("\nFavourite titles for " + currentUser.getUsername() + ":");
+        if (currentUser.getFavourites().isEmpty()) {
+            ui.displayMsg("You haven't added any favourites yet!");
+        } else {
+            for (String title : currentUser.getFavourites()) {
+                ui.displayMsg("- " + title);
+            }
+        }
+    }
+
     public void searchMovie() {
         String searchFilm = TextUI.promptText("Type movie name:");
         boolean found = false;
@@ -87,10 +112,20 @@ public class StreamingService {
         for (Media m : mediaLibrary) {
             if (m.getTitle().equalsIgnoreCase(searchFilm)) {
                 found = true;
+                Playable playable = (Playable) m;
+
                 ui.displayMsg("The movie " + m.getTitle() + " has been found!");
 
+                int choice = ui.promptNumeric("Choose and action\n" +
+                        "1)Play Moive\n2)Pause Movie\n3)Stop Movie\n4)Go back to menu");
+
+                if (choice == 1) playable.playMovie();
+                else if (choice == 2) playable.pauseMovie();
+                else if (choice == 3) playable.stopMovie();
+                else if (choice == 4) userMenu();
+
                 if (m instanceof Playable) {
-                    Playable playable = (Playable) m;
+
                     playable.playMovie();
 
                     currentUser.addSeen(m.getTitle());
@@ -107,21 +142,21 @@ public class StreamingService {
             searchMovie();
         }
     }
+
     private void playMedia(Media media) {
         if (media instanceof Movie m) {
             m.playMovie();
             currentUser.addSeen(m.getTitle());
             ui.displayMsg("Saved to watched list: " + m.getTitle());
-        }
-        else if (media instanceof Series s) {
+        } else if (media instanceof Series s) {
             s.playMovie();
             currentUser.addSeen(s.getTitle());
             ui.displayMsg("Saved to watched list: " + s.getTitle());
-        }
-        else {
+        } else {
             ui.displayMsg("Unknown media type.");
         }
     }
+
     private void loadAllMedia() {
         mediaLibrary.clear();
 
@@ -158,13 +193,14 @@ public class StreamingService {
         ui.displayMsg(mediaLibrary.size() + " movies and series loaded.");
     }
 
-            private void removeFromList (Media media){
-                if (currentUser.getSeen().remove(media.getTitle())) {
-                    ui.displayMsg(media.getTitle() + " removed from saved list.");
-                } else {
-                    ui.displayMsg(media.getTitle() + " was not in saved list.");
-                }
+    private void removeFromList(Media media) {
+        if (currentUser.getSeen().remove(media.getTitle())) {
+            ui.displayMsg(media.getTitle() + " removed from saved list.");
+        } else {
+            ui.displayMsg(media.getTitle() + " was not in saved list.");
         }
+    }
+
     public void showWatchedList() {
         ui.displayMsg("\nWatched titles for " + currentUser.getUsername() + ":");
         if (currentUser.getSeen().isEmpty()) {
@@ -175,37 +211,140 @@ public class StreamingService {
             }
         }
     }
-    public void userSession() {
-        boolean running = true;
 
-        while (running) {
-            int choice = ui.promptNumeric(
-                    "\nUser Menu for " + currentUser.getUsername() + ":\n" +
-                            "1) Search for a movie or series\n" +
-                            "2) View watched list\n" +
-                            "3) Log out"
+    public void deleteSavedMedia() {
+        int listChoice = ui.promptNumeric("What list would you like to delete from?\n1) Watched list\n2) Favourites\n0) Return to user menu");
+        String fileName;
+        if (listChoice == 1) {
+            fileName = "Data/" + currentUser.getUsername() + "watched.csv";
+            loadWatchedList();
+        } else if (listChoice == 2) {
+            fileName = "Data/" + currentUser.getUsername() + "Favourites";
+            loadFavourites();
+        } else {
+            ui.displayMsg("Returning...");
+            return;
+        }
+        ArrayList<String> list = (listChoice == 1) ? currentUser.getSeen() : currentUser.getFavourites();
+
+        if (list.isEmpty()) {
+            ui.displayMsg("List is empty");
+            return;
+        }
+        ui.displayMsg("What media would you like to remove?");
+        for (int i = 0; i < list.size(); i++) {
+            ui.displayMsg((i + 1) + ") " + list.get(i));
+        }
+        int choice = ui.promptNumeric("Select a number to delete media, press 0 to cancel");
+        if (choice == 0) {
+            ui.displayMsg("Canceled, returning...");
+            return;
+        }
+        if (choice < 1 || choice > list.size()) {
+            ui.displayMsg("Invalid choice, try again");
+            return;
+        }
+        String removed = list.remove(choice - 1);
+        ui.displayMsg(removed + " is removed from list");
+
+        try (FileWriter writer = new FileWriter(fileName)) {
+            if (listChoice == 1) {
+                writer.write("Watched Titles\n");
+            } else {
+                writer.write("Favourites\n");
+            }
+            for (String item : list) {
+                writer.write(item + "\n");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void userMenu() {
+        while (true) {
+            int choice = ui.promptNumeric("\nUser Menu for " + currentUser.getUsername() + ":\n" +
+                    "1) Search for a movie or series\n" +
+                    "2) View watched list\n" +
+                    "3) View favourites\n" +
+                    "4) Add a favourite manually\n" +
+                    "5) Delete saved media\n"+
+                    "6) Log out"
             );
 
             if (choice == 1) {
                 searchMovie();
             } else if (choice == 2) {
+                loadWatchedList();
                 showWatchedList();
             } else if (choice == 3) {
+                loadFavourites();
+                showFavourites();
+            } else if (choice == 4) {
+                favouritesList();
+            } else if (choice == 5){
+                deleteSavedMedia();
+            } else if (choice == 6) {
                 ui.displayMsg("Logging out...");
-                running = false;
                 startSession();
             } else {
                 ui.displayMsg("Invalid choice. Try again.");
             }
         }
     }
-        public void deleteFromFavorites(Media media){
 
+    public void loadFavourites() {
+        String fileName = "Data/" + currentUser.getUsername() + "Favourites.csv";
+        File favouritesFile = new File(fileName);
+
+        if (!favouritesFile.exists()) {
+            ui.displayMsg("No favourites file found for " + currentUser.getUsername() + ".");
+            return;
         }
 
-        public void endSession () {
-            ui.displayMsg("Exiting Chill");
+        ArrayList<String> lines = io.readData(fileName);
+        currentUser.getFavourites().clear();
 
+        for (String line : lines) {
+            boolean isHeader = line.equalsIgnoreCase("Favourites");
+            boolean isEmpty = line.isEmpty();
+
+            if (!isHeader && !isEmpty) {
+                currentUser.addFavourite(line.trim());
+            }
         }
+
+        ui.displayMsg("Loaded " + currentUser.getFavourites().size() + " favourites for " + currentUser.getUsername() + ".");
     }
+
+
+    public void loadWatchedList() {
+        String fileName = "Data/" + currentUser.getUsername() + "watchedList.csv";
+        File watchedFile = new File(fileName);
+
+        if (!watchedFile.exists()) {
+            ui.displayMsg("No watched list found for " + currentUser.getUsername() + ".");
+            return;
+        }
+
+        ArrayList<String> lines = io.readData(fileName);
+        currentUser.getSeen().clear();
+
+        for (String line : lines) {
+            boolean isHeader = line.equalsIgnoreCase("Watched Titles");
+            boolean isEmpty = line.isEmpty();
+
+            if (!isHeader && !isEmpty) {
+                currentUser.addSeen(line);
+            }
+        }
+
+        ui.displayMsg("Loaded " + currentUser.getSeen().size() + " watched titles for " + currentUser.getUsername() + ".");
+    }
+    public void endSession () {
+        ui.displayMsg("Exiting Chill");
+
+    }
+}
+
 
