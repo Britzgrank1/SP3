@@ -213,48 +213,33 @@ public class StreamingService {
     }
 
     public void deleteSavedMedia() {
-        int listChoice = ui.promptNumeric("What list would you like to delete from?\n1) Watched list\n2) Favourites\n0) Return to user menu");
-        String fileName;
-        if (listChoice == 1) {
-            fileName = "Data/" + currentUser.getUsername() + "watched.csv";
-            loadWatchedList();
-        } else if (listChoice == 2) {
-            fileName = "Data/" + currentUser.getUsername() + "Favourites";
             loadFavourites();
-        } else {
-            ui.displayMsg("Returning...");
-            return;
+            if(currentUser.getFavourites().isEmpty()){
+                ui.displayMsg("List is empty");
+                return;
         }
-        ArrayList<String> list = (listChoice == 1) ? currentUser.getSeen() : currentUser.getFavourites();
+            ui.displayMsg("\nYour current favourite list");
+            ArrayList<String> favourites = currentUser.getFavourites();
+        for(int i = 0; i<favourites.size(); i++){
+            ui.displayMsg((i+1) + ") " + favourites.get(i));
+        }
 
-        if (list.isEmpty()) {
-            ui.displayMsg("List is empty");
-            return;
-        }
-        ui.displayMsg("What media would you like to remove?");
-        for (int i = 0; i < list.size(); i++) {
-            ui.displayMsg((i + 1) + ") " + list.get(i));
-        }
-        int choice = ui.promptNumeric("Select a number to delete media, press 0 to cancel");
+        int choice = ui.promptNumeric("Select a number to delete media from favourites, press 0 to cancel");
         if (choice == 0) {
             ui.displayMsg("Canceled, returning...");
             return;
         }
-        if (choice < 1 || choice > list.size()) {
+        if (choice < 1 || choice > favourites.size()) {
             ui.displayMsg("Invalid choice, try again");
             return;
         }
-        String removed = list.remove(choice - 1);
+        String removed = favourites.remove(choice - 1);
         ui.displayMsg(removed + " is removed from list");
-
+        String fileName = "Data/" + currentUser.getUsername()+"Favourites.csv";
         try (FileWriter writer = new FileWriter(fileName)) {
-            if (listChoice == 1) {
-                writer.write("Watched Titles\n");
-            } else {
                 writer.write("Favourites\n");
-            }
-            for (String item : list) {
-                writer.write(item + "\n");
+            for (String favourite : favourites) {
+                writer.write(favourite + "\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
