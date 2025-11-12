@@ -28,7 +28,7 @@ public class StreamingService {
             if (categoryChoice == 1) {
 
                 showMoviesByCategory();
-            } else if (categoryChoice == 2){
+            } else if (categoryChoice == 2) {
                 showSeriesByCategory();
             }
 
@@ -179,51 +179,70 @@ public class StreamingService {
         ui.displayMsg("Exiting Chill");
 
     }
-    private void showSeriesByCategory(){
+
+    private void showSeriesByCategory() {
         String selectedCategorySeries = "repeat";
-        while (selectedCategorySeries == "repeat"){
+        while (selectedCategorySeries == "repeat") {
             ui.displayMsg("Select a category:\n1. Comedy\n2. Drama\n3. Action\n4. Sci-fi\n5. Romance\n6. Thriller\n" +
                     "7. Horror\n8. Biography\n9. Family\n10. Adventure\n11. Talk-show\n12. Mystery\n13. Crime\n14. Fantasy\n" +
                     "15. Sport\n16. History\n17. War\n18. Documentary\n0. Cancel  ");
 
             int choice = ui.promptNumeric("Enter your choice:");
 
-            switch (choice){
-                case 1: selectedCategorySeries = "Comedy";
+            switch (choice) {
+                case 1:
+                    selectedCategorySeries = "Comedy";
                     break;
-                case 2: selectedCategorySeries = "Drama";
+                case 2:
+                    selectedCategorySeries = "Drama";
                     break;
-                case 3: selectedCategorySeries = "Action";
+                case 3:
+                    selectedCategorySeries = "Action";
                     break;
-                case 4: selectedCategorySeries = "Sci-fi";
+                case 4:
+                    selectedCategorySeries = "Sci-fi";
                     break;
-                case 5: selectedCategorySeries = "Romance";
+                case 5:
+                    selectedCategorySeries = "Romance";
                     break;
-                case 6: selectedCategorySeries = "Thriller";
+                case 6:
+                    selectedCategorySeries = "Thriller";
                     break;
-                case 7: selectedCategorySeries = "Horror";
+                case 7:
+                    selectedCategorySeries = "Horror";
                     break;
-                case 8: selectedCategorySeries = "Biography";
+                case 8:
+                    selectedCategorySeries = "Biography";
                     break;
-                case 9: selectedCategorySeries = "Family";
+                case 9:
+                    selectedCategorySeries = "Family";
                     break;
-                case 10: selectedCategorySeries = "Adventure";
+                case 10:
+                    selectedCategorySeries = "Adventure";
                     break;
-                case 11: selectedCategorySeries = "Talk-show";
+                case 11:
+                    selectedCategorySeries = "Talk-show";
                     break;
-                case 12: selectedCategorySeries = "Mystery";
+                case 12:
+                    selectedCategorySeries = "Mystery";
                     break;
-                case 13: selectedCategorySeries = "Crime";
+                case 13:
+                    selectedCategorySeries = "Crime";
                     break;
-                case 14: selectedCategorySeries = "Fantasy";
+                case 14:
+                    selectedCategorySeries = "Fantasy";
                     break;
-                case 15: selectedCategorySeries = "Sport";
+                case 15:
+                    selectedCategorySeries = "Sport";
                     break;
-                case 16: selectedCategorySeries = "History";
+                case 16:
+                    selectedCategorySeries = "History";
                     break;
-                case 17: selectedCategorySeries = "War";
+                case 17:
+                    selectedCategorySeries = "War";
                     break;
-                case 18: selectedCategorySeries = "Documentary";
+                case 18:
+                    selectedCategorySeries = "Documentary";
                     break;
 
                 case 0:
@@ -253,10 +272,6 @@ public class StreamingService {
     }
 
 
-
-
-
-
     private void showMoviesByCategory() {
         String selectedCategoryMovies = "repeat";
         while (selectedCategoryMovies == "repeat") {
@@ -276,25 +291,35 @@ public class StreamingService {
             int choice = ui.promptNumeric("Enter your choice:");
 
             switch (choice) {
-                case 1: selectedCategoryMovies = "Comedy";
+                case 1:
+                    selectedCategoryMovies = "Comedy";
                     break;
-                case 2: selectedCategoryMovies = "Drama";
+                case 2:
+                    selectedCategoryMovies = "Drama";
                     break;
-                case 3: selectedCategoryMovies = "Action";
+                case 3:
+                    selectedCategoryMovies = "Action";
                     break;
-                case 4: selectedCategoryMovies = "Sci-fi";
+                case 4:
+                    selectedCategoryMovies = "Sci-fi";
                     break;
-                case 5: selectedCategoryMovies = "Romance";
+                case 5:
+                    selectedCategoryMovies = "Romance";
                     break;
-                case 6: selectedCategoryMovies = "Thriller";
+                case 6:
+                    selectedCategoryMovies = "Thriller";
                     break;
-                case 7: selectedCategoryMovies = "Horror";
+                case 7:
+                    selectedCategoryMovies = "Horror";
                     break;
-                case 8: selectedCategoryMovies = "Biography";
+                case 8:
+                    selectedCategoryMovies = "Biography";
                     break;
-                case 9: selectedCategoryMovies = "Family";
+                case 9:
+                    selectedCategoryMovies = "Family";
                     break;
-                case 10: selectedCategoryMovies = "Adventure";
+                case 10:
+                    selectedCategoryMovies = "Adventure";
                     break;
                 case 0:
                     ui.displayMsg("Cancelled.");
@@ -304,22 +329,7 @@ public class StreamingService {
                     selectedCategoryMovies = "repeat";
             }
         }
-
-
         ArrayList<String> lines = io.readData("Data/film.csv");
-        boolean found = false;
-
-        for (String line : lines) {
-            if (line.contains(selectedCategoryMovies)) {
-                ui.displayMsg(line);
-                found = true;
-            }
-
-        }
-
-        if (!found) {
-            ui.displayMsg("No movies found in category: " + selectedCategoryMovies);
-        }
+        ArrayList<Movie> foundMovies = new ArrayList<>();
     }
-
 }

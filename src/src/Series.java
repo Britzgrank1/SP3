@@ -17,7 +17,6 @@ public class Series extends Media {
         return "Series{" +
                 "seasons=" + seasons.length +
                 ", title='" + title + '\'' +
-                ", releaseYear=" + releaseYear +
                 ", category='" + category + '\'' +
                 ", rating=" + rating +
                 '}';
