@@ -83,21 +83,35 @@ public class StreamingService {
 
     public void favouritesList() {
         String title = TextUI.promptText("Type the name of the movie or series to add to favourites:");
-        File favouritesFile = new File("Data/" + currentUser.getUsername() + "Favourites.csv");
-        try (FileWriter writer = new FileWriter(favouritesFile, true)) {
-            if (favouritesFile.length() == 0) {
-                writer.write("Favourites\n");
+
+        boolean found = false;
+
+        for (Media m : mediaLibrary) {
+            if (m.getTitle().equalsIgnoreCase(title)) {
+                found = true;
+                File favouritesFile = new File("Data/" + currentUser.getUsername() + "Favourites.csv");
+
+
+                try (FileWriter writer = new FileWriter(favouritesFile, true)) {
+                    if (favouritesFile.length() == 0) {
+                        writer.write("Favourites\n");
+                    }
+                    writer.write(title + "\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
             }
-            writer.write(title + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        if (found == false) {
+            ui.displayMsg("That title does not exist in the library. Try again.");
         }
     }
 
     private void showFavourites() {
         ui.displayMsg("\nFavourite titles for " + currentUser.getUsername() + ":");
         if (currentUser.getFavourites().isEmpty()) {
-            ui.displayMsg("You haven't added any favourites yet!");
+            ui.displayMsg("You haven't added any favourites yet.");
         } else {
             for (String title : currentUser.getFavourites()) {
                 ui.displayMsg("- " + title);
@@ -106,39 +120,69 @@ public class StreamingService {
     }
 
     public void searchMovie() {
-        String searchFilm = TextUI.promptText("Type movie name:");
+        String searchTitle = TextUI.promptText("Type movie or series name:");
         boolean found = false;
 
         for (Media m : mediaLibrary) {
-            if (m.getTitle().equalsIgnoreCase(searchFilm)) {
+            if (m.getTitle().equalsIgnoreCase(searchTitle)) {
                 found = true;
-                Playable playable = (Playable) m;
 
-                ui.displayMsg("The movie " + m.getTitle() + " has been found!");
+                String type = (m instanceof Movie) ? "movie" : "series";
+                ui.displayMsg("The " + type + " \"" + m.getTitle() + "\" has been found!");
 
-                int choice = ui.promptNumeric("Choose and action\n" +
-                        "1)Play Moive\n2)Pause Movie\n3)Stop Movie\n4)Go back to menu");
+                int choice = ui.promptNumeric("1) Play " + type + "\n2) Go back to menu");
 
-                if (choice == 1) playable.playMovie();
-                else if (choice == 2) playable.pauseMovie();
-                else if (choice == 3) playable.stopMovie();
-                else if (choice == 4) userMenu();
-
-                if (m instanceof Playable) {
-
+                if (choice == 1) {
+                    Playable playable = (Playable) m;
                     playable.playMovie();
 
                     currentUser.addSeen(m.getTitle());
                     watchedList(m);
                     ui.displayMsg("Saved to watched list: " + m.getTitle());
+
+                    boolean isPlaying = true;
+                    while (isPlaying) {
+                        int control = ui.promptNumeric(
+                                "Now playing " + m.getTitle() + "\n" +
+                                        "1) Pause\n2) Stop\n3) Continue playing"
+                        );
+                        if (control == 1) {
+                            playable.pauseMovie();
+                        } else if (control == 2) {
+                            playable.stopMovie();
+                            isPlaying = false;
+                        } else if (control == 3) {
+                            playable.playMovie();
+                        } else {
+                            ui.displayMsg("Invalid choice.");
+                        }
+                    }
+
+                    String favChoice = TextUI.promptText("Would you like to add this to favourites? (yes/no)");
+                    if (favChoice.equalsIgnoreCase("yes")) {
+                        File favouritesFile = new File("Data/" + currentUser.getUsername() + "Favourites.csv");
+                        try (FileWriter writer = new FileWriter(favouritesFile, true)) {
+                            if (favouritesFile.length() == 0) {
+                                writer.write("Favourites\n");
+                            }
+                            writer.write(m.getTitle() + "\n");
+                            ui.displayMsg(m.getTitle() + " added to favourites!");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                } else if (choice == 2) {
+                    userMenu();
                 } else {
-                    ui.displayMsg("This movie cannot be played.");
+                    ui.displayMsg("Invalid choice.");
                 }
                 break;
             }
         }
+
         if (!found) {
-            ui.displayMsg("Movie not found, try again!");
+            ui.displayMsg("No movie or series found with that name. Try again!");
             searchMovie();
         }
     }
@@ -161,37 +205,29 @@ public class StreamingService {
         mediaLibrary.clear();
 
         ArrayList<String> films = io.readData("Data/film.csv");
-        ArrayList<String> series = io.readData("Data/series.csv");
+        ArrayList<String> series = io.readData("Data/serier.csv");
 
         // Movies
         for (String f : films) {
-            if (f.length() > 1) {
-                String title = "";
-                for (String letter : f.split("")) {
-                    if (letter.equals(";")) {
-                        break;
-                    }
-                    title += letter;
-                }
+            if (f != null && f.length() > 1) {
+                String[] parts = f.split(";");
+                String title = parts[0];
                 mediaLibrary.add(new Movie(title));
             }
         }
 
         // Series
         for (String s : series) {
-            if (s.length() > 1) {
-                String title = "";
-                for (String letter : s.split("")) {
-                    if (letter.equals(";")) {
-                        break;
-                    }
-                    title += letter;
-                }
+            if (s != null && s.length() > 1) {
+                String[] parts = s.split(";");
+                String title = parts[0];
                 mediaLibrary.add(new Series(title));
             }
         }
+
         ui.displayMsg(mediaLibrary.size() + " movies and series loaded.");
     }
+
 
     private void removeFromList(Media media) {
         if (currentUser.getSeen().remove(media.getTitle())) {
@@ -204,7 +240,7 @@ public class StreamingService {
     public void showWatchedList() {
         ui.displayMsg("\nWatched titles for " + currentUser.getUsername() + ":");
         if (currentUser.getSeen().isEmpty()) {
-            ui.displayMsg("You haven't watched anything yet!");
+            ui.displayMsg("You haven't watched anything yet.");
         } else {
             for (String title : currentUser.getSeen()) {
                 ui.displayMsg("- " + title);
@@ -277,6 +313,8 @@ public class StreamingService {
     }
 
 
+
+
     public void loadWatchedList() {
         String fileName = "Data/" + currentUser.getUsername() + "watchedList.csv";
         File watchedFile = new File(fileName);
@@ -300,7 +338,10 @@ public class StreamingService {
 
         ui.displayMsg("Loaded " + currentUser.getSeen().size() + " watched titles for " + currentUser.getUsername() + ".");
     }
-        public void endSession () {
+
+
+
+    public void endSession () {
             ui.displayMsg("Exiting Chill");
 
         }
