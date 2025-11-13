@@ -222,7 +222,7 @@ public class StreamingService {
         }
     }
 
-    public void deleteSavedMedia() {
+    public void deleteFavourites() {
         loadFavourites();
         if (currentUser.getFavourites().isEmpty()) {
             ui.displayMsg("List is empty");
@@ -263,7 +263,7 @@ public class StreamingService {
                     "2) View watched list\n" +
                     "3) View favourites\n" +
                     "4) Add a favourite manually\n" +
-                    "5) Delete saved media\n" +
+                    "5) Delete from favourites\n" +
                     "6) Load Movie from category\n" +
                     "7) Load Series from category\n" +
                     "8) Log out"
@@ -280,7 +280,7 @@ public class StreamingService {
             } else if (choice == 4) {
                 favouritesList();
             } else if (choice == 5) {
-                deleteSavedMedia();
+                deleteFavourites();
             } else if (choice == 6){
                 category.showMoviesByCategory();
             }else if (choice == 7){
