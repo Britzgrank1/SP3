@@ -338,8 +338,6 @@ public class StreamingService {
     }
 
 
-
-
     public void loadWatchedList() {
         String fileName = "Data/" + currentUser.getUsername() + "watchedList.csv";
         File watchedFile = new File(fileName);
@@ -366,11 +364,6 @@ public class StreamingService {
 
     public void endSession() {
         ui.displayMsg("Exiting Chill");
-
-
-
-    public void endSession () {
-            ui.displayMsg("Exiting Chill");
 
     }
 }
