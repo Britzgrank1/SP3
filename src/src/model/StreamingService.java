@@ -180,7 +180,12 @@ public class StreamingService {
         }
         if (!found) {
             ui.displayMsg("No movie or series found with that name. Try again!");
-            searchMovie();
+            int movieNotFound = ui.promptNumeric("(1 Try again\n(2 Go back to menu");
+            if (movieNotFound == 1){
+                searchMovie();
+            } else if (movieNotFound == 2) {
+                userMenu();
+            }
         }
     }
 
