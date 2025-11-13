@@ -39,7 +39,7 @@ public class TextUI {
                 String input = sc.nextLine();
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                displayMsg("Select a number from 0-4!!!");
+                displayMsg("You must select a number");
             }
         }
     }

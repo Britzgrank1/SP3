@@ -30,8 +30,6 @@ public class StreamingService {
         loadAllMedia();
         ui.displayMsg("Welcome to Chill");
         System.out.println();
-
-        try {
             int choice = ui.promptNumeric("Press 1 for login\nPress 2 for create new user\nPress 3 to list all users\nPress 4 delete user\nPress 0 to exit Chill");
 
             if (choice == 1) {
@@ -58,12 +56,8 @@ public class StreamingService {
                 ui.displayMsg("Invalid choice, try again");
                 startSession();
             }
-        } catch (InputMismatchException e){
-            ui.displayMsg("Please choose a number from 0-4");
-            ui.clearScannerBuffer();
-            startSession();
         }
-    }
+
     public void watchedList(Media media) {
         File WatchedList = new File("Data/" + currentUser.getUsername() + "watchedList.csv");
         try (FileWriter writer = new FileWriter(WatchedList, true)) {
