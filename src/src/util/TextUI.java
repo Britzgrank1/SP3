@@ -8,55 +8,64 @@ public class TextUI {
 
     private static Scanner sc = new Scanner(System.in);
 
-    public ArrayList<String> promptChoice( ArrayList<String> options, int limit, String msg){
+    public ArrayList<String> promptChoice(ArrayList<String> options, int limit, String msg) {
         displayMsg(msg);
         displayList(options, "");
         ArrayList<String> choices = new ArrayList<>();  //Lave en beholder til at gemme brugerens valg
 
-        while(choices.size() < limit){             //tjekke om brugeren skal vælge igen
+        while (choices.size() < limit) {             //tjekke om brugeren skal vælge igen
 
             int choice = promptNumeric(msg);
-            choices.add(options.get(choice-1));
+            choices.add(options.get(choice - 1));
         }
         return choices;
     }
 
-    public static void displayList(ArrayList<String>list, String msg) {
-        for (int i = 0; i < list.size();i++) {
-            System.out.println(i+1+". "+list.get(i));
+    public static void displayList(ArrayList<String> list, String msg) {
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(i + 1 + ". " + list.get(i));
         }
     }
 
-    public static void displayMsg(String msg){
+    public static void displayMsg(String msg) {
         System.out.println(msg);
 
     }
-    public int promptNumeric(String msg){
-        displayMsg(msg);                       //Stille brugeren et spørgsmål
-        String input = sc.nextLine();                  //Give brugere et sted at placere sit svar og vente på svaret
-        int numInput = Integer.parseInt(input);        //Konvertere svaret til et tal
 
-        return numInput;
+    public int promptNumeric(String msg) {
+        while (true) {
+            try {
+                displayMsg(msg);
+                String input = sc.nextLine();
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                displayMsg("Select a number from 0-4!!!");
+            }
+        }
     }
 
-    public static String promptText(String msg){
+    public static String promptText(String msg) {
         displayMsg(msg);         //Stille brugeren et spørgsmål
         String input = sc.nextLine();          //Give brugere et sted at placere sit svar og vente på svaret
 
         return input;
     }
 
-    public boolean promptBinary(String msg){
+    public boolean promptBinary(String msg) {
         displayMsg(msg);
         String input = sc.nextLine();
-        if(input.equalsIgnoreCase("Y")){
+        if (input.equalsIgnoreCase("Y")) {
             return true;
-        }
-        else if(input.equalsIgnoreCase("N")){
+        } else if (input.equalsIgnoreCase("N")) {
             return false;
-        }
-        else{
+        } else {
             return promptBinary(msg);
+        }
+    }
+
+    public void clearScannerBuffer() {
+        if (sc.hasNextLine()) {
+            sc.nextLine();
         }
     }
 }

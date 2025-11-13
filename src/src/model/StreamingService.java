@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 
 public class StreamingService {
     ArrayList<Media> mediaLibrary = new ArrayList<>();
@@ -29,30 +30,37 @@ public class StreamingService {
         loadAllMedia();
         ui.displayMsg("Welcome to Chill");
         System.out.println();
-        int choice = ui.promptNumeric("Press 1 for login\nPress 2 for create new user\nPress 3 to list all users\nPress 4 delete user\nPress 0 to exit Chill");
 
-        if (choice == 1) {
-            ui.displayMsg("Going to login screen");
-            userManager.userLogin();
-        } else if (choice == 2) {
-            ui.displayMsg("Going to create user screen");
-            userManager.createUser();
-            ui.displayMsg("Returning...");
-            startSession();
-        } else if (choice == 3) {
-            ui.displayMsg("Retrieving all users");
-            userManager.listAllUsers();
-            ui.displayMsg("Returning...");
-            startSession();
-        } else if (choice == 4) {
-            userManager.deleteUser();
-            ui.displayMsg("Returning...");
-            startSession();
-        } else if (choice == 0) {
-            endSession();
-            System.exit(0);
-        } else {
-            ui.displayMsg("Invalid choice, try again");
+        try {
+            int choice = ui.promptNumeric("Press 1 for login\nPress 2 for create new user\nPress 3 to list all users\nPress 4 delete user\nPress 0 to exit Chill");
+
+            if (choice == 1) {
+                ui.displayMsg("Going to login screen");
+                userManager.userLogin();
+            } else if (choice == 2) {
+                ui.displayMsg("Going to create user screen");
+                userManager.createUser();
+                ui.displayMsg("Returning...");
+                startSession();
+            } else if (choice == 3) {
+                ui.displayMsg("Retrieving all users");
+                userManager.listAllUsers();
+                ui.displayMsg("Returning...");
+                startSession();
+            } else if (choice == 4) {
+                userManager.deleteUser();
+                ui.displayMsg("Returning...");
+                startSession();
+            } else if (choice == 0) {
+                endSession();
+                System.exit(0);
+            } else {
+                ui.displayMsg("Invalid choice, try again");
+                startSession();
+            }
+        } catch (InputMismatchException e){
+            ui.displayMsg("Please choose a number from 0-4");
+            ui.clearScannerBuffer();
             startSession();
         }
     }
