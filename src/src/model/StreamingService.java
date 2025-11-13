@@ -69,21 +69,6 @@ public class StreamingService {
         }
     }
 
-    public void saveToWatched() {
-
-        try (FileWriter writer = new FileWriter("Data/" + currentUser.getUsername() + "watchedList.csv")) {
-            writer.write("Watched Titles\n");
-
-            for (String title : currentUser.getSeen()) {
-                writer.write(title + "\n");
-            }
-            ui.displayMsg("Watched list saved for user: " + currentUser.getUsername());
-        } catch (IOException e) {
-            ui.displayMsg("Error saving watched list: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
     public void favouritesList() {
         String title = TextUI.promptText("Type the name of the movie or series to add to favourites:");
 
@@ -200,20 +185,6 @@ public class StreamingService {
         }
     }
 
-    private void playMedia(Media media) {
-        if (media instanceof Movie m) {
-            m.playMovie();
-            currentUser.addSeen(m.getTitle());
-            ui.displayMsg("Saved to watched list: " + m.getTitle());
-        } else if (media instanceof Series s) {
-            s.playMovie();
-            currentUser.addSeen(s.getTitle());
-            ui.displayMsg("Saved to watched list: " + s.getTitle());
-        } else {
-            ui.displayMsg("Unknown media type.");
-        }
-    }
-
     private void loadAllMedia() {
         mediaLibrary.clear();
 
@@ -239,15 +210,6 @@ public class StreamingService {
         }
 
         ui.displayMsg(mediaLibrary.size() + " movies and series loaded.");
-    }
-
-
-    private void removeFromList(Media media) {
-        if (currentUser.getSeen().remove(media.getTitle())) {
-            ui.displayMsg(media.getTitle() + " removed from saved list.");
-        } else {
-            ui.displayMsg(media.getTitle() + " was not in saved list.");
-        }
     }
 
     public void showWatchedList() {
