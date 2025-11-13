@@ -6,6 +6,9 @@ import util.TextUI;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class StreamingService {
@@ -371,6 +374,20 @@ public class StreamingService {
         }
 
         ui.displayMsg("Loaded " + currentUser.getSeen().size() + " watched titles for " + currentUser.getUsername() + ".");
+    }
+    public boolean deleteUserFiles(String filePath){
+        try {
+            Path path = Paths.get(filePath);
+            if(!Files.exists(path)) {
+                ui.displayMsg("File does not exist");
+                return false;
+            }
+            Files.delete(path);
+            return true;
+        } catch (IOException e) {
+            ui.displayMsg("Deletion failed " + e.getMessage());
+            return false;
+        }
     }
 
     public void endSession() {
