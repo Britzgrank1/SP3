@@ -148,6 +148,17 @@ public class StreamingService {
                         );
                         if (control == 1) {
                             playable.pauseMovie();
+                            int pauseChoice = ui.promptNumeric("Movie/Series Paused - "+m.getTitle()+"\n" +
+                            "1) Continue playing\n2) Stop playing"
+                            );
+
+                            if(pauseChoice == 1){
+                                playable.playMovie();
+                            }else if (pauseChoice == 2){
+                                playable.stopMovie();
+                                isPlaying = false;
+                            }
+
                         } else if (control == 2) {
                             playable.stopMovie();
                             isPlaying = false;
