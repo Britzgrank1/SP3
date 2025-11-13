@@ -8,7 +8,6 @@ public class User {
     ArrayList<String> seen = new ArrayList<>();
     ArrayList<String> favourites = new ArrayList<>();
 
-
     public ArrayList<String> getFavourites() {
         return favourites;
     }
@@ -44,21 +43,14 @@ public class User {
         return seen;
     }
 
-
-
     public void addSeen(String mediaTitle) {
         if (!seen.contains(mediaTitle)) {
             seen.add(mediaTitle);
         }
     }
 
-
-
     @Override
     public String toString() {
         return username + ", " + password;
     }
 }
-
-
-

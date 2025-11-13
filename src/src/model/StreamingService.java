@@ -24,7 +24,6 @@ public class StreamingService {
         category.setCurrentUser(user);
     }
 
-
     public void startSession() {
         userManager.loadUsers();
         loadAllMedia();
@@ -56,9 +55,7 @@ public class StreamingService {
             ui.displayMsg("Invalid choice, try again");
             startSession();
         }
-
     }
-
     public void watchedList(Media media) {
         File WatchedList = new File("Data/" + currentUser.getUsername() + "watchedList.csv");
         try (FileWriter writer = new FileWriter(WatchedList, true)) {
@@ -322,7 +319,6 @@ public class StreamingService {
         ui.displayMsg("Loaded " + currentUser.getFavourites().size() + " favourites for " + currentUser.getUsername() + ".");
     }
 
-
     public void loadWatchedList() {
         String fileName = "Data/" + currentUser.getUsername() + "watchedList.csv";
         File watchedFile = new File(fileName);
@@ -331,19 +327,15 @@ public class StreamingService {
             ui.displayMsg("No watched list found for " + currentUser.getUsername() + ".");
             return;
         }
-
         ArrayList<String> lines = io.readData(fileName);
         currentUser.getSeen().clear();
-
         for (String line : lines) {
             boolean isHeader = line.equalsIgnoreCase("Watched Titles");
             boolean isEmpty = line.isEmpty();
-
             if (!isHeader && !isEmpty) {
                 currentUser.addSeen(line);
             }
         }
-
         ui.displayMsg("Loaded " + currentUser.getSeen().size() + " watched titles for " + currentUser.getUsername() + ".");
     }
     public boolean deleteUserFiles(String filePath){
@@ -360,11 +352,7 @@ public class StreamingService {
             return false;
         }
     }
-
     public void endSession() {
         ui.displayMsg("Exiting Chill");
-
     }
 }
-
-
