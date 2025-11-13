@@ -17,9 +17,11 @@ public class StreamingService {
     FileIO io = new FileIO();
     User currentUser;
     UserManager userManager = new UserManager(this);
+    public Category category = new Category();
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
+        category.setCurrentUser(user);
     }
 
 
@@ -265,7 +267,9 @@ public class StreamingService {
                     "3) View favourites\n" +
                     "4) Add a favourite manually\n" +
                     "5) Delete saved media\n" +
-                    "6) Log out"
+                    "6) Load Movie from category\n" +
+                    "7) Load Series from category\n" +
+                    "8) Log out"
             );
 
             if (choice == 1) {
@@ -280,7 +284,12 @@ public class StreamingService {
                 favouritesList();
             } else if (choice == 5) {
                 deleteSavedMedia();
-            } else if (choice == 6) {
+            } else if (choice == 6){
+                category.showMoviesByCategory();
+            }else if (choice == 7){
+                category.showSeriesByCategory();
+            }
+            else if (choice == 8) {
                 ui.displayMsg("Logging out...");
                 startSession();
             } else {

@@ -24,6 +24,7 @@ public class UserManager {
         String username = TextUI.promptText("Insert username: ");
         String password = TextUI.promptText("Insert password: ");
         boolean userExists = false;
+
         for (User u : users) {
             if (u.getUsername().equalsIgnoreCase(username)
                     && u.getPassword().equals(password)) {
@@ -34,6 +35,7 @@ public class UserManager {
         if (userExists) {
             System.out.println("Login successful! Welcome " + currentUser.getUsername());
             s.setCurrentUser(currentUser);
+            s.category.setCurrentUser(currentUser);
             s.userMenu();
         } else {
             System.out.println("Username or password incorrect. Please try again.");
