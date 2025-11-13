@@ -18,7 +18,6 @@ public class Episode implements Playable {
     public int getEpisodeNumber() { return episodeNumber; }
     public int getDuration() { return duration; }
 
-
     @Override
     public void playMovie() {
         ui.displayMsg("Playing " + title + " episode "+ episodeNumber );
@@ -42,9 +41,4 @@ public class Episode implements Playable {
                 ", duration=" + duration +
                 '}';
     }
-
-
 }
-
-
-
