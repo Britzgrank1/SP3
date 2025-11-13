@@ -100,6 +100,8 @@ public class UserManager {
         if (userExists) {
             System.out.println("Delete successful!, " + currentUser.getUsername() + " is now deleted");
             users.remove(currentUser);
+            s.deleteUserFiles("Data/"+currentUser.getUsername()+"watchedlist.csv");
+            s.deleteUserFiles("Data/"+currentUser.getUsername()+"Favourites.csv");
             saveUsers();
 
         } else {
@@ -123,5 +125,4 @@ public class UserManager {
             e.printStackTrace();
         }
     }
-
 }
